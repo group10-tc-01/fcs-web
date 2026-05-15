@@ -1,12 +1,11 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, signal } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
 
 @Component({
-  selector: 'app-root',
+  selector: "fcg-root",
   imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.scss'
+  templateUrl: "./app.html",
 })
-export class App {
-  protected readonly title = signal('fcg-solidarity-web');
+export class AppComponent {
+  protected readonly title = signal("fcg-solidarity-web");
 }
