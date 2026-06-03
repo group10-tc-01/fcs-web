@@ -1,59 +1,184 @@
-# FcgSolidarityWeb
+# fcg-solidarity-web
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.11.
+Interface web da plataforma **Conexão Solidária**, criada para apoiar o MVP da ONG **Esperança Solidária** com cadastro de **Doador**, autenticação, painel público de transparência, fluxo de doação e operação administrativa por **GestorONG**.
 
-## Development server
+Este repositório representa o cliente web da solução. As regras de negócio, autenticação, campanhas e doações ficam nas APIs do ecossistema Fase 05; o frontend consome essas APIs e mantém o vocabulário de domínio documentado em `docs/`.
 
-To start a local development server, run:
+## Contexto da solução
+
+A Conexão Solidária conecta doadores a campanhas de arrecadação administradas por uma ONG. A arquitetura confirmada para a Fase 05 usa microsserviços, JWT/RBAC, Kafka, auditoria centralizada e infraestrutura Kubernetes/Azure.
+
+Aplicações relacionadas:
+
+- `fcg-identity`: fachada de identidade, login, refresh, cadastro de **Doador** e perfil `/me`.
+- `fcg-campaigns`: gestão de campanhas e painel público de transparência.
+- `fcg-donations`: recebimento de intenções de doação.
+- `fcg-donation-worker`: processamento assíncrono de doações via Kafka.
+- `fcg-audit-logs`: consumo e persistência de auditoria em MongoDB.
+- `fcg-solidarity-infra`: ambiente integrado, Kubernetes, observabilidade e Azure.
+
+## Responsabilidade do frontend
+
+O `fcg-solidarity-web` deve concentrar a experiência de uso da plataforma:
+
+- Exibir o **Painel de Transparência** com campanhas ativas e valores arrecadados.
+- Permitir cadastro e login de **Doador** usando a `fcg-identity`.
+- Permitir que um **Doador** autenticado envie uma **Intenção de Doação** para uma campanha ativa.
+- Permitir que um **Doador** acompanhe suas próprias doações.
+- Permitir que um **GestorONG** acesse fluxos administrativos de campanhas.
+- Tratar erros das APIs no envelope `ApiResponse<T>` adotado pelos serviços.
+
+O cliente não deve chamar o Keycloak diretamente. Toda autenticação passa pela `fcg-identity`, conforme as decisões de arquitetura.
+
+## Stack
+
+- Angular 21
+- TypeScript 5.9
+- PrimeNG 21
+- Tailwind CSS 4
+- Vitest para testes unitários
+- ESLint, Prettier, Husky e lint-staged
+
+Padrões locais:
+
+- Componentes standalone.
+- Signals para estado local.
+- Rotas lazy quando features forem adicionadas.
+- Templates com `@if`, `@for` e `@switch`.
+- Injeção com `inject()`.
+- Acessibilidade seguindo WCAG AA.
+
+## Fluxos esperados
+
+### Público
+
+- Consultar campanhas ativas em `GET /api/v1/transparency/campaigns`.
+- Cadastrar **Doador** em `POST /api/v1/auth/register/donor`.
+- Realizar login em `POST /api/v1/auth/login`.
+
+### Doador
+
+- Consultar perfil em `GET /api/v1/me`.
+- Criar intenção de doação em `POST /api/v1/donations`.
+- Listar doações em `GET /api/v1/donations`.
+- Consultar detalhe de doação em `GET /api/v1/donations/{id}`.
+
+### GestorONG
+
+- Consultar perfil em `GET /api/v1/me`.
+- Criar campanha em `POST /api/v1/campaigns`.
+- Editar campanha em `PUT /api/v1/campaigns/{id}`.
+- Alterar status de campanha em `PATCH /api/v1/campaigns/{id}/status`.
+- Listar e consultar campanhas administrativas em `GET /api/v1/campaigns`.
+- Acompanhar doações conforme autorização da API.
+
+## Requisitos
+
+- Node.js compatível com Angular 21.
+- npm 11.
+- APIs da plataforma em execução localmente ou em ambiente integrado.
+
+Instale as dependências:
 
 ```bash
-ng serve
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Execução local
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Suba o servidor de desenvolvimento:
 
 ```bash
-ng generate component component-name
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+A aplicação fica disponível em:
+
+```text
+http://localhost:4200
+```
+
+## Qualidade
+
+Rodar testes unitários:
 
 ```bash
-ng generate --help
+npm run test:ci
 ```
 
-## Building
-
-To build the project run:
+Rodar lint:
 
 ```bash
-ng build
+npm run lint
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Verificar formatação:
 
 ```bash
-ng test
+npm run format:check
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Executar a verificação completa:
 
 ```bash
-ng e2e
+npm run verify
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+O comando `verify` executa formatação, lint, testes unitários e build de produção.
 
-## Additional Resources
+## Build
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Gerar build de produção:
+
+```bash
+npm run build
+```
+
+Os artefatos são publicados em `dist/`.
+
+## Integração com as APIs
+
+As APIs seguem o envelope `ApiResponse<T>`:
+
+```json
+{
+  "success": true,
+  "data": {},
+  "errorMessages": null
+}
+```
+
+Erros retornam `success: false`, `data: null` e uma lista em `errorMessages`.
+
+Rotas públicas de negócio usam o prefixo:
+
+```text
+/api/v1
+```
+
+Rotas operacionais e internas não devem ser expostas ao usuário final:
+
+```text
+/health
+/metrics
+/internal/*
+```
+
+## Segurança
+
+- JWT emitido pelo Keycloak e obtido via `fcg-identity`.
+- Roles canônicas: `Doador` e `GestorONG`.
+- Validação de JWT e RBAC permanece nas APIs.
+- O frontend deve usar a role apenas para experiência de navegação, nunca como única barreira de segurança.
+- Segredos, URLs sensíveis e tokens reais não devem ser versionados.
+
+## Referências
+
+Documentação de arquitetura no workspace principal:
+
+- `docs/CONTEXT.md`
+- `docs/architecture/overview.md`
+- `docs/architecture/endpoints.md`
+- `docs/architecture/endpoint-flows.md`
+- `docs/adr/0001-keycloak-behind-identity-api.md`
+- `docs/adr/0022-reuse-fcg-pipelines-for-ci-cd.md`

@@ -1,0 +1,10 @@
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+
+@Component({
+  selector: "fcg-loading",
+  templateUrl: "./loading.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class LoadingComponent {
+  readonly label = input("Carregando...");
+}

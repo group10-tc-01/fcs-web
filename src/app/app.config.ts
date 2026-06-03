@@ -7,15 +7,15 @@ import { providePrimeNG } from "primeng/config";
 import Aura from "@primeuix/themes/aura";
 
 import { routes } from "./app.routes";
-import { GlobalErrorHandlerService } from "@core/error-handling/global-error-handler.service";
-import { globalHttpErrorInterceptor } from "@core/error-handling/global-http-error.interceptor";
-import { httpErrorTestInterceptor } from "@core/error-handling/http-error-test.interceptor";
+import { errorInterceptor } from "@core/interceptors/error.interceptor";
+import { httpErrorTestInterceptor } from "@core/interceptors/http-error-test.interceptor";
+import { GlobalErrorHandlerService } from "@core/services/global-error-handler.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([globalHttpErrorInterceptor, httpErrorTestInterceptor])),
+    provideHttpClient(withInterceptors([errorInterceptor, httpErrorTestInterceptor])),
     provideRouter(routes),
     MessageService,
     {
