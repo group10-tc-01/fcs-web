@@ -5,7 +5,7 @@ import { IAuthenticatedUser } from "@features/auth/services/auth.service";
 
 interface ICampaignSummary {
   title: string;
-  status: "Ativa" | "Concluida" | "Cancelada";
+  status: "Ativa" | "Concluída" | "Cancelada";
   goal: string;
   raised: string;
   progress: number;
@@ -22,7 +22,7 @@ export class ManagerDashboardComponent {
 
   protected readonly campaigns: ICampaignSummary[] = [
     {
-      title: "Natal Solidario",
+      title: "Natal Solidário",
       status: "Ativa",
       goal: "R$ 50.000,00",
       raised: "R$ 32.500,00",
@@ -37,7 +37,7 @@ export class ManagerDashboardComponent {
     },
     {
       title: "Inverno Acolhedor",
-      status: "Concluida",
+      status: "Concluída",
       goal: "R$ 15.000,00",
       raised: "R$ 15.000,00",
       progress: 100,

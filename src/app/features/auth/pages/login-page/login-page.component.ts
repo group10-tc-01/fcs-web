@@ -23,7 +23,14 @@ export class LoginPageComponent {
   private readonly router = inject(Router);
 
   protected readonly isSubmitting = signal(false);
+  protected readonly isPasswordVisible = signal(false);
   protected readonly submitError = signal("");
+  protected readonly passwordInputType = computed(() =>
+    this.isPasswordVisible() ? "text" : "password",
+  );
+  protected readonly passwordToggleLabel = computed(() =>
+    this.isPasswordVisible() ? "Ocultar senha" : "Mostrar senha",
+  );
   protected readonly submitButtonLabel = computed(() =>
     this.isSubmitting() ? "Entrando..." : "Entrar",
   );
@@ -55,14 +62,18 @@ export class LoginPageComponent {
         next: () => {
           this.notificationService.success(
             "Login realizado",
-            "Voce entrou na sua conta com sucesso.",
+            "Você entrou na sua conta com sucesso.",
           );
           void this.router.navigateByUrl("/dashboard");
         },
         error: () => {
-          this.submitError.set("Email ou senha incorretos. Tente novamente.");
+          this.submitError.set("E-mail ou senha incorretos. Tente novamente.");
         },
       });
+  }
+
+  protected togglePasswordVisibility(): void {
+    this.isPasswordVisible.update((isVisible) => !isVisible);
   }
 
   protected isInvalid(controlName: LoginControlName): boolean {
@@ -74,13 +85,13 @@ export class LoginPageComponent {
     const control = this.loginForm.controls[controlName];
 
     if (control.hasError("required")) {
-      return "Campo obrigatorio.";
+      return "Campo obrigatório.";
     }
 
     if (control.hasError("email")) {
-      return "Informe um email valido.";
+      return "Informe um e-mail válido.";
     }
 
-    return "Campo invalido.";
+    return "Campo inválido.";
   }
 }

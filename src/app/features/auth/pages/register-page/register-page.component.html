@@ -28,7 +28,7 @@
         <label for="nomeCompleto" class="text-foreground text-sm font-medium">Nome Completo</label>
         <div class="relative">
           <i
-            class="pi pi-user text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
+            class="text-muted-foreground pi pi-user absolute top-1/2 left-3 -translate-y-1/2"
             aria-hidden="true"
           ></i>
           <input
@@ -51,10 +51,10 @@
       </div>
 
       <div class="space-y-2">
-        <label for="email" class="text-foreground text-sm font-medium">Email</label>
+        <label for="email" class="text-foreground text-sm font-medium">E-mail</label>
         <div class="relative">
           <i
-            class="pi pi-envelope text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
+            class="text-muted-foreground pi pi-envelope absolute top-1/2 left-3 -translate-y-1/2"
             aria-hidden="true"
           ></i>
           <input
@@ -78,7 +78,7 @@
         <label for="cpf" class="text-foreground text-sm font-medium">CPF</label>
         <div class="relative">
           <i
-            class="pi pi-id-card text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
+            class="text-muted-foreground pi pi-id-card absolute top-1/2 left-3 -translate-y-1/2"
             aria-hidden="true"
           ></i>
           <input
@@ -105,20 +105,34 @@
         <label for="senha" class="text-foreground text-sm font-medium">Senha</label>
         <div class="relative">
           <i
-            class="pi pi-lock text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
+            class="text-muted-foreground pi pi-lock absolute top-1/2 left-3 -translate-y-1/2"
             aria-hidden="true"
           ></i>
           <input
             id="senha"
-            type="password"
+            [type]="passwordInputType()"
             formControlName="senha"
             autocomplete="new-password"
-            class="border-input bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-ring w-full rounded-lg border py-2.5 pr-3 pl-10 transition-colors outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
-            placeholder="Minimo 8 caracteres"
+            class="border-input bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-ring w-full rounded-lg border py-2.5 pr-12 pl-10 transition-colors outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
+            placeholder="Mínimo 8 caracteres"
             [attr.aria-invalid]="isInvalid('senha')"
             [attr.aria-describedby]="isInvalid('senha') ? 'senha-error' : null"
             [disabled]="isSubmitting()"
           />
+          <button
+            type="button"
+            class="text-muted-foreground hover:text-foreground focus-visible:ring-ring absolute top-1/2 right-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+            [attr.aria-label]="passwordToggleLabel()"
+            [attr.aria-pressed]="isPasswordVisible()"
+            [disabled]="isSubmitting()"
+            (click)="togglePasswordVisibility()"
+          >
+            @if (isPasswordVisible()) {
+              <i class="pi pi-eye-slash" aria-hidden="true"></i>
+            } @else {
+              <i class="pi pi-eye" aria-hidden="true"></i>
+            }
+          </button>
         </div>
         @if (isInvalid("senha")) {
           <p id="senha-error" class="text-destructive text-sm">{{ controlError("senha") }}</p>
@@ -131,20 +145,34 @@
         >
         <div class="relative">
           <i
-            class="pi pi-lock text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
+            class="text-muted-foreground pi pi-lock absolute top-1/2 left-3 -translate-y-1/2"
             aria-hidden="true"
           ></i>
           <input
             id="confirmarSenha"
-            type="password"
+            [type]="passwordConfirmationInputType()"
             formControlName="confirmarSenha"
             autocomplete="new-password"
-            class="border-input bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-ring w-full rounded-lg border py-2.5 pr-3 pl-10 transition-colors outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
+            class="border-input bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-ring w-full rounded-lg border py-2.5 pr-12 pl-10 transition-colors outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
             placeholder="Repita a senha"
             [attr.aria-invalid]="isInvalid('confirmarSenha')"
             [attr.aria-describedby]="isInvalid('confirmarSenha') ? 'confirmarSenha-error' : null"
             [disabled]="isSubmitting()"
           />
+          <button
+            type="button"
+            class="text-muted-foreground hover:text-foreground focus-visible:ring-ring absolute top-1/2 right-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+            [attr.aria-label]="passwordConfirmationToggleLabel()"
+            [attr.aria-pressed]="isPasswordConfirmationVisible()"
+            [disabled]="isSubmitting()"
+            (click)="togglePasswordConfirmationVisibility()"
+          >
+            @if (isPasswordConfirmationVisible()) {
+              <i class="pi pi-eye-slash" aria-hidden="true"></i>
+            } @else {
+              <i class="pi pi-eye" aria-hidden="true"></i>
+            }
+          </button>
         </div>
         @if (isInvalid("confirmarSenha")) {
           <p id="confirmarSenha-error" class="text-destructive text-sm">
@@ -162,8 +190,8 @@
     </form>
 
     <p class="text-muted-foreground mt-4 text-center text-sm">
-      Ja tem uma conta?
-      <a routerLink="/login" class="text-primary transition-colors hover:underline">Faca login</a>
+      Já tem uma conta?
+      <a routerLink="/login" class="text-primary transition-colors hover:underline">Faça login</a>
     </p>
   </div>
 </section>

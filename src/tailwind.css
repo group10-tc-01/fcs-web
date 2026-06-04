@@ -171,15 +171,21 @@
     padding-bottom: max(1rem, env(safe-area-inset-bottom));
   }
 
+  .p-toast.fcg-toast,
+  p-toast.fcg-toast .p-toast,
   .fcg-toast {
     width: min(calc(100vw - 2rem), 24rem);
   }
 
   @media (max-width: 640px) {
+    .p-toast.fcg-toast,
+    p-toast.fcg-toast .p-toast,
     .fcg-toast {
       right: auto !important;
       left: 50% !important;
-      transform: translateX(-50%);
+      width: min(calc(100vw - 6rem), 17rem) !important;
+      max-width: 17rem !important;
+      transform: translateX(-50%) !important;
     }
   }
 }

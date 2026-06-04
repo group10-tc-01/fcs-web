@@ -5,7 +5,7 @@
     <a
       routerLink="/"
       class="focus:ring-ring focus:ring-offset-background flex items-center gap-2 rounded-md focus:ring-2 focus:ring-offset-2 focus:outline-none"
-      aria-label="Pagina inicial da Conexao Solidaria"
+      aria-label="Página inicial da Conexão Solidária"
     >
       <span
         class="bg-primary text-primary-foreground flex h-9 w-9 items-center justify-center rounded-lg"
@@ -16,7 +16,7 @@
       <span class="text-foreground text-lg font-semibold">Conexão Solidária</span>
     </a>
 
-    <nav class="hidden items-center gap-6 md:flex" aria-label="Navegacao principal">
+    <nav class="hidden items-center gap-6 md:flex" aria-label="Navegação principal">
       @for (item of navigationItems; track item.route) {
         <a
           [routerLink]="item.route"
@@ -32,7 +32,7 @@
       @if (isAuthenticated()) {
         <div
           class="border-border bg-card flex items-center gap-3 rounded-xl border px-3 py-2"
-          aria-label="Usuario autenticado"
+          aria-label="Usuário autenticado"
         >
           <span
             class="bg-primary/10 text-primary flex h-9 w-9 items-center justify-center rounded-lg"
@@ -97,7 +97,7 @@
       icon="pi pi-bars"
       variant="text"
       severity="secondary"
-      ariaLabel="Abrir menu de navegacao"
+      ariaLabel="Abrir menu de navegação"
       (onClick)="openMobileMenu()"
     />
   </div>
@@ -111,11 +111,11 @@
   header="Conexão Solidária"
   styleClass="fcg-mobile-drawer !w-full sm:!w-80"
 >
-  <nav class="bg-popover text-popover-foreground space-y-3" aria-label="Navegacao principal mobile">
+  <nav class="bg-popover text-popover-foreground space-y-3" aria-label="Navegação principal mobile">
     @if (isAuthenticated()) {
       <section
         class="border-border bg-card mb-5 rounded-2xl border p-4"
-        aria-label="Usuario autenticado"
+        aria-label="Usuário autenticado"
       >
         <div class="flex items-center gap-3">
           <span

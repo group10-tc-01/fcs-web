@@ -29,7 +29,23 @@ export class RegisterPageComponent {
   private readonly router = inject(Router);
 
   protected readonly isSubmitting = signal(false);
+  protected readonly isPasswordVisible = signal(false);
+  protected readonly isPasswordConfirmationVisible = signal(false);
   protected readonly submitError = signal("");
+  protected readonly passwordInputType = computed(() =>
+    this.isPasswordVisible() ? "text" : "password",
+  );
+  protected readonly passwordConfirmationInputType = computed(() =>
+    this.isPasswordConfirmationVisible() ? "text" : "password",
+  );
+  protected readonly passwordToggleLabel = computed(() =>
+    this.isPasswordVisible() ? "Ocultar senha" : "Mostrar senha",
+  );
+  protected readonly passwordConfirmationToggleLabel = computed(() =>
+    this.isPasswordConfirmationVisible()
+      ? "Ocultar confirmação de senha"
+      : "Mostrar confirmação de senha",
+  );
   protected readonly submitButtonLabel = computed(() =>
     this.isSubmitting() ? "Criando conta..." : "Criar Conta",
   );
@@ -69,12 +85,12 @@ export class RegisterPageComponent {
         next: () => {
           this.notificationService.success(
             "Conta criada",
-            "Cadastro realizado com sucesso. Voce ja pode acessar sua conta.",
+            "Cadastro realizado com sucesso. Você já pode acessar sua conta.",
           );
           void this.router.navigateByUrl("/login");
         },
         error: () => {
-          this.submitError.set("Erro ao criar conta. O email pode ja estar em uso.");
+          this.submitError.set("Erro ao criar conta. O e-mail pode já estar em uso.");
         },
       });
   }
@@ -87,6 +103,14 @@ export class RegisterPageComponent {
       .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
 
     this.registerForm.controls.cpf.setValue(formattedCpf, { emitEvent: false });
+  }
+
+  protected togglePasswordVisibility(): void {
+    this.isPasswordVisible.update((isVisible) => !isVisible);
+  }
+
+  protected togglePasswordConfirmationVisibility(): void {
+    this.isPasswordConfirmationVisible.update((isVisible) => !isVisible);
   }
 
   protected isInvalid(controlName: RegisterControlName): boolean {
@@ -104,28 +128,28 @@ export class RegisterPageComponent {
     const control = this.registerForm.controls[controlName];
 
     if (control.hasError("required")) {
-      return "Campo obrigatorio.";
+      return "Campo obrigatório.";
     }
 
     if (control.hasError("email")) {
-      return "Informe um email valido.";
+      return "Informe um e-mail válido.";
     }
 
     if (control.hasError("minlength")) {
       return controlName === "senha"
-        ? "A senha deve ter no minimo 6 caracteres."
+        ? "A senha deve ter no mínimo 8 caracteres."
         : "Informe seu nome completo.";
     }
 
     if (control.hasError("invalidCpf")) {
-      return "CPF invalido. Verifique e tente novamente.";
+      return "CPF inválido. Verifique e tente novamente.";
     }
 
     if (controlName === "confirmarSenha" && this.registerForm.hasError("passwordMismatch")) {
-      return "As senhas nao coincidem.";
+      return "As senhas não coincidem.";
     }
 
-    return "Campo invalido.";
+    return "Campo inválido.";
   }
 
   private static matchingPasswordsValidator(control: AbstractControl): ValidationErrors | null {
