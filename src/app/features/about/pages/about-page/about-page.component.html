@@ -1,0 +1,155 @@
+<section
+  class="border-border from-background to-card border-b bg-gradient-to-b py-20"
+  aria-labelledby="about-hero-title"
+>
+  <div class="mx-auto w-full max-w-7xl px-4">
+    <div class="mx-auto max-w-3xl text-center">
+      <p
+        class="border-primary/30 bg-primary/10 text-primary mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm"
+      >
+        <i class="pi pi-heart text-base" aria-hidden="true"></i>
+        <span>Nossa História</span>
+      </p>
+
+      <h1
+        id="about-hero-title"
+        class="text-foreground mb-6 text-4xl leading-tight font-bold tracking-normal md:text-5xl"
+      >
+        <span>Conheça a </span>
+        <span class="text-primary">ONG Esperança Solidária</span>
+      </h1>
+
+      <p class="text-muted-foreground text-lg">
+        Há mais de 10 anos transformando vidas e construindo futuros para crianças em situação de
+        vulnerabilidade.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="border-border bg-card border-b py-12" aria-labelledby="about-stats-title">
+  <div class="mx-auto w-full max-w-7xl px-4">
+    <h2 id="about-stats-title" class="sr-only">Números da ONG Esperança Solidária</h2>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      @for (stat of stats; track stat.label) {
+        <article class="border-border bg-background rounded-xl border p-6 text-center">
+          <div
+            class="bg-primary/10 text-primary mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl"
+            aria-hidden="true"
+          >
+            <i [class]="stat.icon + ' text-2xl'"></i>
+          </div>
+
+          <p class="text-foreground text-3xl font-bold">{{ stat.value }}</p>
+          <h3 class="text-muted-foreground text-sm font-medium">{{ stat.label }}</h3>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="py-20" aria-labelledby="mission-title">
+  <div class="mx-auto w-full max-w-7xl px-4">
+    <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div>
+        <h2 id="mission-title" class="text-foreground mb-6 text-3xl font-bold">Nossa Missão</h2>
+
+        <p class="text-muted-foreground mb-4 leading-relaxed">
+          A ONG Esperança Solidária nasceu do desejo de fazer a diferença na vida de crianças que
+          enfrentam situações de vulnerabilidade social. Desde 2014, trabalhamos para oferecer
+          acolhimento, educação e oportunidades para um futuro melhor.
+        </p>
+
+        <p class="text-muted-foreground mb-6 leading-relaxed">
+          Nossa abordagem vai além do assistencialismo. Buscamos empoderar as famílias e as
+          comunidades, criando uma rede de apoio sustentável que permite que cada criança alcance
+          seu pleno potencial.
+        </p>
+
+        <a routerLink="/campanhas" pButton class="gap-2">
+          <span pButtonLabel>Conheça Nossas Campanhas</span>
+          <i class="pi pi-arrow-right" pButtonIcon aria-hidden="true"></i>
+        </a>
+      </div>
+
+      <div class="relative">
+        <div
+          class="from-primary/20 via-card to-accent/20 aspect-square rounded-3xl bg-gradient-to-br p-8"
+        >
+          <div class="flex h-full items-center justify-center">
+            <div class="text-center">
+              <i class="pi pi-heart text-primary text-8xl" aria-hidden="true"></i>
+              <p class="text-foreground mt-4 text-lg font-semibold">Conexão Solidária</p>
+              <p class="text-muted-foreground text-sm">Transformando vidas com amor</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="border-border bg-card border-t py-20" aria-labelledby="values-title">
+  <div class="mx-auto w-full max-w-7xl px-4">
+    <div class="mx-auto mb-12 max-w-2xl text-center">
+      <h2 id="values-title" class="text-foreground mb-4 text-3xl font-bold">Nossos Valores</h2>
+      <p class="text-muted-foreground">Os pilares que guiam todas as nossas ações</p>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      @for (value of values; track value.title) {
+        <article class="border-border bg-background rounded-xl border p-6 text-center">
+          <div
+            class="bg-accent/10 text-accent mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl"
+            aria-hidden="true"
+          >
+            <i [class]="value.icon + ' text-2xl'"></i>
+          </div>
+
+          <h3 class="text-foreground mb-2 font-semibold">{{ value.title }}</h3>
+          <p class="text-muted-foreground text-sm">{{ value.description }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="py-20" aria-labelledby="platform-title">
+  <div class="mx-auto w-full max-w-7xl px-4">
+    <article
+      class="border-border bg-card mx-auto max-w-4xl overflow-hidden rounded-3xl border p-8 md:p-12"
+    >
+      <div class="text-center">
+        <h2 id="platform-title" class="text-foreground mb-4 text-2xl font-bold md:text-3xl">
+          A Plataforma Conexão Solidária
+        </h2>
+
+        <p class="text-muted-foreground mx-auto mb-6 max-w-3xl">
+          Desenvolvida para escalar nosso impacto, a plataforma Conexão Solidária permite que
+          doadores de todo o Brasil acompanhem nossas campanhas em tempo real, com total
+          transparência e segurança nas transações.
+        </p>
+
+        <div class="mb-8 grid gap-4 text-center sm:grid-cols-3">
+          @for (metric of platformMetrics; track metric.label) {
+            <div class="bg-secondary rounded-lg p-4">
+              <p class="text-primary text-2xl font-bold">{{ metric.value }}</p>
+              <p class="text-muted-foreground text-sm">{{ metric.label }}</p>
+            </div>
+          }
+        </div>
+
+        <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a routerLink="/cadastro" pButton>
+            <span pButtonLabel>Seja um Doador</span>
+          </a>
+
+          <a routerLink="/transparencia" pButton severity="secondary">
+            <span pButtonLabel>Ver Transparência</span>
+          </a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>

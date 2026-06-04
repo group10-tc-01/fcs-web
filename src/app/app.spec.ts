@@ -26,64 +26,24 @@ describe("AppComponent", () => {
     expect(app).toBeTruthy();
   });
 
-  it("should render the shared header", async () => {
+  it("should render the shared shell", async () => {
     const fixture = TestBed.createComponent(AppComponent);
     await fixture.whenStable();
+
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector("fcg-header")?.textContent).toContain("Conexão Solidária");
-  });
-
-  it("should render public navigation", async () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    await fixture.whenStable();
-
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain("Campanhas");
-    expect(compiled.textContent).toContain("Transparência");
-    expect(compiled.textContent).toContain("Sobre Nós");
-  });
-
-  it("should render the landing hero", async () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    await fixture.whenStable();
-
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector("h1")?.textContent).toContain("Sua doação transforma");
-    expect(compiled.textContent).toContain("vidas");
-    expect(compiled.textContent).toContain("Doar Agora");
-    expect(compiled.textContent).toContain("Ver Transparência");
-  });
-
-  it("should render the allowed landing sections from the React page", async () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    await fixture.whenStable();
-
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain("Por que doar conosco?");
-    expect(compiled.textContent).toContain("100% Transparente");
-    expect(compiled.textContent).toContain("Comunidade Ativa");
-    expect(compiled.textContent).toContain("Impacto Comprovado");
-    expect(compiled.textContent).toContain("Pronto para fazer a diferença?");
-    expect(compiled.textContent).toContain("Criar Conta Gratuita");
-  });
-
-  it("should render the shared footer", async () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    await fixture.whenStable();
-
-    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector("router-outlet")).toBeTruthy();
     expect(compiled.querySelector("fcg-footer")?.textContent).toContain("Links Rápidos");
-    expect(compiled.querySelector("fcg-footer")?.textContent).toContain("Contato");
   });
 
-  it("should not render the omitted stats and active campaigns sections", async () => {
+  it("should render the responsive toast host", async () => {
     const fixture = TestBed.createComponent(AppComponent);
     await fixture.whenStable();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).not.toContain("Total Arrecadado");
-    expect(compiled.textContent).not.toContain("Doadores Ativos");
-    expect(compiled.textContent).not.toContain("Campanhas Ativas");
-    expect(compiled.textContent).not.toContain("Escolha uma campanha e faça a diferença hoje");
+    const toast = compiled.querySelector("p-toast");
+
+    expect(toast?.getAttribute("position")).toBe("top-right");
+    expect(toast?.getAttribute("styleclass")).toBe("fcg-toast");
   });
 });

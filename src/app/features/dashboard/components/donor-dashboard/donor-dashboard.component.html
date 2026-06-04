@@ -1,0 +1,90 @@
+<div class="space-y-8">
+  <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <div>
+      <p class="text-primary text-sm font-medium">Area do doador</p>
+      <h1 id="dashboard-title" class="text-foreground mt-1 text-3xl font-bold">Minha Area</h1>
+      <p class="text-muted-foreground mt-2">
+        Bem-vindo(a), {{ user().name }}. Acompanhe suas doacoes e descubra novas campanhas.
+      </p>
+    </div>
+
+    <a routerLink="/campanhas" pButton class="w-full justify-center gap-2 md:w-auto">
+      <span pButtonLabel>Explorar Campanhas</span>
+      <i class="pi pi-arrow-right" pButtonIcon aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-3">
+    <article class="border-border bg-card rounded-2xl border p-5">
+      <div class="flex items-center justify-between gap-4">
+        <p class="text-muted-foreground text-sm font-medium">Total Doado</p>
+        <i class="pi pi-chart-line text-primary" aria-hidden="true"></i>
+      </div>
+      <p class="text-foreground mt-3 text-2xl font-bold">R$ 230,00</p>
+      <p class="text-muted-foreground mt-1 text-xs">Em {{ donations.length }} doacoes</p>
+    </article>
+
+    <article class="border-border bg-card rounded-2xl border p-5">
+      <div class="flex items-center justify-between gap-4">
+        <p class="text-muted-foreground text-sm font-medium">Campanhas Apoiadas</p>
+        <i class="pi pi-heart text-accent" aria-hidden="true"></i>
+      </div>
+      <p class="text-foreground mt-3 text-2xl font-bold">2</p>
+      <p class="text-muted-foreground mt-1 text-xs">Campanhas diferentes</p>
+    </article>
+
+    <article class="border-border bg-card rounded-2xl border p-5">
+      <div class="flex items-center justify-between gap-4">
+        <p class="text-muted-foreground text-sm font-medium">Membro Desde</p>
+        <i class="pi pi-calendar text-chart-2" aria-hidden="true"></i>
+      </div>
+      <p class="text-foreground mt-3 text-2xl font-bold">2026</p>
+      <p class="text-muted-foreground mt-1 text-xs">Obrigado por fazer parte</p>
+    </article>
+  </div>
+
+  <section
+    class="border-border bg-card rounded-2xl border"
+    aria-labelledby="donation-history-title"
+  >
+    <div class="border-border border-b p-5">
+      <h2
+        id="donation-history-title"
+        class="text-foreground flex items-center gap-2 text-xl font-semibold"
+      >
+        <i class="pi pi-gift text-primary" aria-hidden="true"></i>
+        Historico de Doacoes
+      </h2>
+      <p class="text-muted-foreground mt-1 text-sm">Acompanhe todas as suas contribuicoes.</p>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full min-w-[36rem] text-left text-sm">
+        <thead class="border-border text-muted-foreground border-b">
+          <tr>
+            <th scope="col" class="px-5 py-3 font-medium">Campanha</th>
+            <th scope="col" class="px-5 py-3 font-medium">Valor</th>
+            <th scope="col" class="px-5 py-3 font-medium">Status</th>
+            <th scope="col" class="px-5 py-3 font-medium">Data</th>
+          </tr>
+        </thead>
+        <tbody class="divide-border divide-y">
+          @for (donation of donations; track donation.campaign) {
+            <tr>
+              <td class="text-foreground px-5 py-4 font-medium">{{ donation.campaign }}</td>
+              <td class="text-primary px-5 py-4 font-semibold">{{ donation.value }}</td>
+              <td class="px-5 py-4">
+                <span
+                  class="border-accent/30 bg-accent/10 text-accent rounded-full border px-2.5 py-1 text-xs"
+                >
+                  {{ donation.status }}
+                </span>
+              </td>
+              <td class="text-muted-foreground px-5 py-4">{{ donation.date }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

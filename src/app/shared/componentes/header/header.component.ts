@@ -1,8 +1,16 @@
 import { DOCUMENT } from "@angular/common";
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal } from "@angular/core";
-import { RouterLink, RouterLinkActive } from "@angular/router";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnDestroy,
+  signal,
+} from "@angular/core";
+import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { DrawerModule } from "primeng/drawer";
+import { AuthService } from "@features/auth/services/auth.service";
 
 interface INavigationItem {
   label: string;
@@ -18,11 +26,21 @@ interface INavigationItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnDestroy {
+  private readonly authService = inject(AuthService);
   private readonly document = inject(DOCUMENT);
+  private readonly router = inject(Router);
 
   private scrollLockTop = 0;
 
   protected readonly mobileMenuOpen = signal(false);
+  protected readonly currentUser = this.authService.currentUser;
+  protected readonly isAuthenticated = this.authService.isAuthenticated;
+  protected readonly isManager = this.authService.isManager;
+  protected readonly firstName = computed(() => this.currentUser()?.name.split(" ")[0] ?? "");
+  protected readonly profileLabel = computed(() => (this.isManager() ? "GestorONG" : "Doador"));
+  protected readonly dashboardLabel = computed(() =>
+    this.isManager() ? "Painel do Gestor" : "Minha Área",
+  );
 
   protected readonly navigationItems: INavigationItem[] = [
     {
@@ -58,6 +76,15 @@ export class HeaderComponent implements OnDestroy {
   protected updateMobileMenuVisibility(visible: boolean): void {
     this.mobileMenuOpen.set(visible);
     this.updateDocumentScrollLock(visible);
+  }
+
+  protected logout(): void {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.closeMobileMenu();
+        void this.router.navigateByUrl("/");
+      },
+    });
   }
 
   ngOnDestroy(): void {

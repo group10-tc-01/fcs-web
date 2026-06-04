@@ -174,4 +174,12 @@
   .fcg-toast {
     width: min(calc(100vw - 2rem), 24rem);
   }
+
+  @media (max-width: 640px) {
+    .fcg-toast {
+      right: auto !important;
+      left: 50% !important;
+      transform: translateX(-50%);
+    }
+  }
 }

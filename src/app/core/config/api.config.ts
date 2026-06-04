@@ -1,3 +1,3 @@
 export const API_CONFIG = {
-  baseUrl: "",
+  identityBaseUrl: "https://localhost:64533",
 } as const;

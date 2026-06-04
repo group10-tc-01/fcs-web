@@ -1,8 +1,8 @@
-import { HttpClient, provideHttpClient, withInterceptors } from "@angular/common/http";
+import { HttpClient, HttpContext, provideHttpClient, withInterceptors } from "@angular/common/http";
 import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
 import { TestBed } from "@angular/core/testing";
 import { NotificationService } from "@core/services/notification.service";
-import { errorInterceptor } from "./error.interceptor";
+import { SKIP_ERROR_NOTIFICATION, errorInterceptor } from "./error.interceptor";
 
 describe("errorInterceptor", () => {
   let httpClient: HttpClient;
@@ -59,5 +59,27 @@ describe("errorInterceptor", () => {
     // Assert
     expect(notificationService.error).toHaveBeenCalledWith("Erro na requisição", message);
     expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  it("should skip user notification when the request asks for silent error handling", () => {
+    // Arrange
+    const url = "/api/silent-error";
+    const context = new HttpContext().set(SKIP_ERROR_NOTIFICATION, true);
+
+    // Act
+    httpClient.get(url, { context }).subscribe({
+      next: () => {
+        throw new Error("A requisição deveria falhar.");
+      },
+      error: () => undefined,
+    });
+
+    httpTestingController
+      .expectOne(url)
+      .flush({ message: "Erro" }, { status: 401, statusText: "Erro" });
+
+    // Assert
+    expect(notificationService.error).not.toHaveBeenCalled();
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 });
