@@ -1,89 +1,60 @@
 <p-toast />
 
-<main class="min-h-screen bg-zinc-950 text-zinc-50">
-  <section class="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-6 py-8 sm:px-10 lg:px-12">
-    <header class="flex items-center justify-between border-b border-white/10 pb-6">
-      <a
-        class="text-sm font-semibold tracking-wide text-white"
-        href="/"
-        aria-label="Página inicial da Conexão Solidária"
-      >
-        Conexão Solidária
-      </a>
+<div class="bg-background text-foreground flex min-h-screen flex-col">
+  <fcg-header />
 
-      <span
-        class="rounded-full border border-emerald-400/30 px-3 py-1 text-xs font-medium text-emerald-200"
-      >
-        Angular + Tailwind + PrimeNG
-      </span>
-    </header>
-
-    <div
-      class="grid flex-1 content-center gap-12 py-16 lg:grid-cols-[1.15fr_0.85fr] lg:items-center"
+  <main class="flex-1">
+    <section
+      class="border-border from-background to-card relative overflow-hidden border-b bg-gradient-to-b py-20 lg:py-32"
+      aria-labelledby="home-hero-title"
     >
-      <section class="max-w-3xl">
-        <p class="mb-5 text-sm font-semibold tracking-[0.28em] text-emerald-300 uppercase">
-          Aplicação web
-        </p>
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,color-mix(in_oklch,var(--primary)_10%,transparent),transparent_50%)]"
+        aria-hidden="true"
+      ></div>
 
-        <h1 class="text-5xl leading-tight font-semibold text-white sm:text-6xl lg:text-7xl">
-          Conexão Solidária está pronta para começar.
-        </h1>
-
-        <p class="mt-6 max-w-2xl text-lg leading-8 text-zinc-300">
-          Projeto Angular configurado com Tailwind, PrimeNG, ESLint, testes e convenções de
-          nomenclatura alinhadas ao seu jeito de trabalhar.
-        </p>
-
-        <div class="mt-10 flex flex-wrap gap-3">
-          <a
-            class="rounded-md bg-emerald-400 px-5 py-3 text-sm font-semibold text-zinc-950 transition hover:bg-emerald-300 focus:ring-2 focus:ring-emerald-200 focus:ring-offset-2 focus:ring-offset-zinc-950 focus:outline-none"
-            href="https://angular.dev"
-            target="_blank"
-            rel="noopener"
+      <div class="relative mx-auto w-full max-w-7xl px-4">
+        <div class="mx-auto max-w-3xl text-center">
+          <p
+            class="border-primary/30 bg-primary/10 text-primary mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm"
           >
-            Angular Docs
-          </a>
+            <i class="pi pi-sparkles text-base" aria-hidden="true"></i>
+            <span>Mais de 10 anos transformando vidas</span>
+          </p>
 
-          <a
-            class="rounded-md border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/35 hover:bg-white/5 focus:ring-2 focus:ring-white/40 focus:ring-offset-2 focus:ring-offset-zinc-950 focus:outline-none"
-            href="https://primeng.org"
-            target="_blank"
-            rel="noopener"
+          <h1
+            id="home-hero-title"
+            class="text-foreground mb-6 text-4xl leading-tight font-bold tracking-normal md:text-5xl lg:text-6xl"
           >
-            PrimeNG Docs
-          </a>
+            <span>Sua doação transforma </span>
+            <span class="text-primary">vidas</span>
+          </h1>
+
+          <p class="text-muted-foreground mb-8 text-lg md:text-xl">
+            A ONG Esperança Solidária acolhe crianças em situação de vulnerabilidade. Junte-se a nós
+            nessa missão de amor e esperança.
+          </p>
+
+          <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <a
+              routerLink="/campanhas"
+              pButton
+              class="gap-2"
+              aria-label="Doar agora para uma campanha"
+            >
+              <i class="pi pi-heart" pButtonIcon aria-hidden="true"></i>
+              <span pButtonLabel>Doar Agora</span>
+            </a>
+
+            <a routerLink="/transparencia" pButton severity="secondary" class="gap-2">
+              <span pButtonLabel>Ver Transparência</span>
+              <i class="pi pi-arrow-right" pButtonIcon aria-hidden="true"></i>
+            </a>
+          </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section
-        aria-label="Estado de configuração do projeto"
-        class="border-l border-white/10 pl-6 sm:pl-8"
-      >
-        <dl class="space-y-7">
-          <div>
-            <dt class="text-sm font-medium text-zinc-400">Prefixo Angular</dt>
-            <dd class="mt-1 text-2xl font-semibold text-white">fcg</dd>
-          </div>
-
-          <div>
-            <dt class="text-sm font-medium text-zinc-400">Estilo</dt>
-            <dd class="mt-1 text-2xl font-semibold text-white">Tailwind-first</dd>
-          </div>
-
-          <div>
-            <dt class="text-sm font-medium text-zinc-400">UI</dt>
-            <dd class="mt-1 text-2xl font-semibold text-white">PrimeNG Toast</dd>
-          </div>
-
-          <div>
-            <dt class="text-sm font-medium text-zinc-400">Convenção</dt>
-            <dd class="mt-1 text-2xl font-semibold text-white">Component, Service, IInterface</dd>
-          </div>
-        </dl>
-      </section>
-    </div>
-  </section>
-</main>
-
-<router-outlet />
+    <router-outlet />
+  </main>
+</div>

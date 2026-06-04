@@ -1,0 +1,98 @@
+<header
+  class="supports-backdrop-filter:bg-background/60 border-border bg-background/95 text-foreground sticky top-0 z-50 border-b backdrop-blur"
+>
+  <div class="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4">
+    <a
+      routerLink="/"
+      class="focus:ring-ring focus:ring-offset-background flex items-center gap-2 rounded-md focus:ring-2 focus:ring-offset-2 focus:outline-none"
+      aria-label="Pagina inicial da Conexao Solidaria"
+    >
+      <span
+        class="bg-primary text-primary-foreground flex h-9 w-9 items-center justify-center rounded-lg"
+        aria-hidden="true"
+      >
+        <i class="pi pi-heart text-xl"></i>
+      </span>
+      <span class="text-foreground text-lg font-semibold">Conexão Solidária</span>
+    </a>
+
+    <nav class="hidden items-center gap-6 md:flex" aria-label="Navegacao principal">
+      @for (item of navigationItems; track item.route) {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="text-foreground"
+          class="text-muted-foreground hover:text-foreground focus-visible:ring-ring focus-visible:ring-offset-background rounded-md px-1 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+        >
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <div class="hidden items-center gap-3 md:flex">
+      <a routerLink="/login" pButton severity="secondary" variant="outlined">
+        <span pButtonLabel>Entrar</span>
+      </a>
+
+      <a routerLink="/cadastro" pButton severity="secondary" variant="outlined">
+        <span pButtonLabel>Cadastrar</span>
+      </a>
+    </div>
+
+    <p-button
+      class="md:hidden"
+      icon="pi pi-bars"
+      variant="text"
+      severity="secondary"
+      ariaLabel="Abrir menu de navegacao"
+      (onClick)="openMobileMenu()"
+    />
+  </div>
+</header>
+
+<p-drawer
+  [visible]="mobileMenuOpen()"
+  (visibleChange)="updateMobileMenuVisibility($event)"
+  position="right"
+  header="Conexão Solidária"
+  styleClass="!w-full sm:!w-80"
+>
+  <nav
+    class="bg-popover text-popover-foreground flex flex-col gap-2"
+    aria-label="Navegacao principal mobile"
+  >
+    @for (item of navigationItems; track item.route) {
+      <a
+        [routerLink]="item.route"
+        routerLinkActive="bg-secondary text-foreground"
+        class="text-muted-foreground hover:bg-secondary hover:text-foreground focus-visible:ring-ring rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
+        (click)="closeMobileMenu()"
+      >
+        {{ item.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="border-border mt-4 border-t pt-4">
+    <div class="flex flex-col gap-2">
+      <a
+        routerLink="/login"
+        pButton
+        severity="secondary"
+        variant="outlined"
+        (click)="closeMobileMenu()"
+      >
+        <span pButtonLabel>Entrar</span>
+      </a>
+
+      <a
+        routerLink="/cadastro"
+        pButton
+        severity="secondary"
+        variant="outlined"
+        (click)="closeMobileMenu()"
+      >
+        <span pButtonLabel>Cadastrar</span>
+      </a>
+    </div>
+  </div>
+</p-drawer>

@@ -9,7 +9,7 @@ export class GlobalErrorHandlerService implements ErrorHandler {
     const normalizedError = this.normalizeError(error);
 
     console.error("[GlobalErrorHandler]", normalizedError);
-    this.notificationService.error("Erro inesperado", "Tente novamente em instantes.");
+    this.notificationService.error("Erro inesperado", normalizedError.message);
   }
 
   private normalizeError(error: unknown): Error {
