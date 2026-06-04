@@ -4,12 +4,12 @@ import { provideAnimationsAsync } from "@angular/platform-browser/animations/asy
 import { provideRouter } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { providePrimeNG } from "primeng/config";
-import Aura from "@primeuix/themes/aura";
 
 import { routes } from "./app.routes";
 import { errorInterceptor } from "@core/interceptors/error.interceptor";
 import { httpErrorTestInterceptor } from "@core/interceptors/http-error-test.interceptor";
 import { GlobalErrorHandlerService } from "@core/services/global-error-handler.service";
+import { fcgPrimePreset } from "@core/config/theme.preset";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,7 +24,10 @@ export const appConfig: ApplicationConfig = {
     },
     providePrimeNG({
       theme: {
-        preset: Aura,
+        preset: fcgPrimePreset,
+        options: {
+          darkModeSelector: ".dark",
+        },
       },
     }),
   ],
