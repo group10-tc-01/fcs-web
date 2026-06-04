@@ -1,0 +1,102 @@
+<section
+  class="from-background to-card flex min-h-[calc(100vh-8rem)] items-center justify-center bg-gradient-to-b px-4 py-12"
+  aria-labelledby="login-title"
+>
+  <div class="border-border bg-card w-full max-w-md rounded-2xl border p-6 shadow-sm md:p-8">
+    <div class="mb-6 text-center">
+      <div
+        class="bg-primary text-primary-foreground mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl"
+        aria-hidden="true"
+      >
+        <i class="pi pi-heart text-xl"></i>
+      </div>
+
+      <h1 id="login-title" class="text-foreground text-2xl font-bold">Bem-vindo de volta</h1>
+      <p class="text-muted-foreground mt-2 text-sm">Entre na sua conta para continuar doando</p>
+    </div>
+
+    @if (submitError()) {
+      <p-message severity="error" styleClass="mb-4 w-full">
+        {{ submitError() }}
+      </p-message>
+    }
+
+    <form [formGroup]="loginForm" class="space-y-4" novalidate (ngSubmit)="submit()">
+      <div class="space-y-2">
+        <label for="email" class="text-foreground text-sm font-medium">E-mail</label>
+        <div class="relative">
+          <i
+            class="text-muted-foreground pi pi-envelope absolute top-1/2 left-3 -translate-y-1/2"
+            aria-hidden="true"
+          ></i>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            class="border-input bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-ring w-full rounded-lg border py-2.5 pr-3 pl-10 transition-colors outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
+            placeholder="seu@email.com"
+            [attr.aria-invalid]="isInvalid('email')"
+            [attr.aria-describedby]="isInvalid('email') ? 'email-error' : null"
+            [disabled]="isSubmitting()"
+          />
+        </div>
+        @if (isInvalid("email")) {
+          <p id="email-error" class="text-destructive text-sm">{{ controlError("email") }}</p>
+        }
+      </div>
+
+      <div class="space-y-2">
+        <label for="senha" class="text-foreground text-sm font-medium">Senha</label>
+        <div class="relative">
+          <i
+            class="text-muted-foreground pi pi-lock absolute top-1/2 left-3 -translate-y-1/2"
+            aria-hidden="true"
+          ></i>
+          <input
+            id="senha"
+            [type]="passwordInputType()"
+            formControlName="senha"
+            autocomplete="current-password"
+            class="border-input bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-ring w-full rounded-lg border py-2.5 pr-12 pl-10 transition-colors outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
+            placeholder="********"
+            [attr.aria-invalid]="isInvalid('senha')"
+            [attr.aria-describedby]="isInvalid('senha') ? 'senha-error' : null"
+            [disabled]="isSubmitting()"
+          />
+          <button
+            type="button"
+            class="text-muted-foreground hover:text-foreground focus-visible:ring-ring absolute top-1/2 right-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+            [attr.aria-label]="passwordToggleLabel()"
+            [attr.aria-pressed]="isPasswordVisible()"
+            [disabled]="isSubmitting()"
+            (click)="togglePasswordVisibility()"
+          >
+            @if (isPasswordVisible()) {
+              <i class="pi pi-eye-slash" aria-hidden="true"></i>
+            } @else {
+              <i class="pi pi-eye" aria-hidden="true"></i>
+            }
+          </button>
+        </div>
+        @if (isInvalid("senha")) {
+          <p id="senha-error" class="text-destructive text-sm">{{ controlError("senha") }}</p>
+        }
+      </div>
+
+      <button type="submit" pButton class="w-full justify-center gap-2" [disabled]="isSubmitting()">
+        @if (isSubmitting()) {
+          <i class="pi pi-spin pi-spinner" pButtonIcon aria-hidden="true"></i>
+        }
+        <span pButtonLabel>{{ submitButtonLabel() }}</span>
+      </button>
+    </form>
+
+    <p class="text-muted-foreground mt-4 text-center text-sm">
+      Não tem uma conta?
+      <a routerLink="/cadastro" class="text-primary transition-colors hover:underline"
+        >Cadastre-se</a
+      >
+    </p>
+  </div>
+</section>

@@ -26,31 +26,24 @@ describe("AppComponent", () => {
     expect(app).toBeTruthy();
   });
 
-  it("should render the shared header", async () => {
+  it("should render the shared shell", async () => {
     const fixture = TestBed.createComponent(AppComponent);
     await fixture.whenStable();
+
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector("fcg-header")?.textContent).toContain("Conexão Solidária");
+    expect(compiled.querySelector("router-outlet")).toBeTruthy();
+    expect(compiled.querySelector("fcg-footer")?.textContent).toContain("Links Rápidos");
   });
 
-  it("should render public navigation", async () => {
+  it("should render the responsive toast host", async () => {
     const fixture = TestBed.createComponent(AppComponent);
     await fixture.whenStable();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain("Campanhas");
-    expect(compiled.textContent).toContain("Transparência");
-    expect(compiled.textContent).toContain("Sobre Nós");
-  });
+    const toast = compiled.querySelector("p-toast");
 
-  it("should render the landing hero", async () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    await fixture.whenStable();
-
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector("h1")?.textContent).toContain("Sua doação transforma");
-    expect(compiled.textContent).toContain("vidas");
-    expect(compiled.textContent).toContain("Doar Agora");
-    expect(compiled.textContent).toContain("Ver Transparência");
+    expect(toast?.getAttribute("position")).toBe("top-right");
+    expect(toast?.getAttribute("styleclass")).toBe("fcg-toast");
   });
 });

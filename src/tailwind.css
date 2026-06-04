@@ -136,4 +136,56 @@
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
   }
+
+  html.fcg-scroll-locked,
+  body.fcg-scroll-locked {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  body.fcg-scroll-locked {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    touch-action: none;
+  }
+
+  .fcg-mobile-drawer {
+    display: flex;
+    flex-direction: column;
+    background: var(--popover);
+    color: var(--popover-foreground);
+  }
+
+  .fcg-mobile-drawer .p-drawer-content {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+
+  .fcg-mobile-drawer .p-drawer-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    background: var(--popover);
+    padding: 1rem;
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .p-toast.fcg-toast,
+  p-toast.fcg-toast .p-toast,
+  .fcg-toast {
+    width: min(calc(100vw - 2rem), 24rem);
+  }
+
+  @media (max-width: 640px) {
+    .p-toast.fcg-toast,
+    p-toast.fcg-toast .p-toast,
+    .fcg-toast {
+      right: auto !important;
+      left: 50% !important;
+      width: min(calc(100vw - 6rem), 17rem) !important;
+      max-width: 17rem !important;
+      transform: translateX(-50%) !important;
+    }
+  }
 }
