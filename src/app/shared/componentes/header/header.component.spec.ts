@@ -1,7 +1,7 @@
 import { computed, signal } from "@angular/core";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 import { By } from "@angular/platform-browser";
-import { provideRouter } from "@angular/router";
+import { Router, provideRouter } from "@angular/router";
 import { TestBed } from "@angular/core/testing";
 import { AuthService, IAuthenticatedUser } from "@features/auth/services/auth.service";
 import { Drawer } from "primeng/drawer";
@@ -112,6 +112,7 @@ describe("HeaderComponent", () => {
       mobileMenuOpen: () => boolean;
       openMobileMenu: () => void;
       closeMobileMenu: () => void;
+      updateMobileMenuVisibility: (visible: boolean) => void;
     };
 
     expect(component.mobileMenuOpen()).toBe(false);
@@ -123,6 +124,14 @@ describe("HeaderComponent", () => {
     component.closeMobileMenu();
     expect(component.mobileMenuOpen()).toBe(false);
     expect(document.documentElement.classList.contains("fcg-scroll-locked")).toBe(false);
+
+    component.updateMobileMenuVisibility(true);
+    expect(component.mobileMenuOpen()).toBe(true);
+    expect(document.documentElement.classList.contains("fcg-scroll-locked")).toBe(true);
+
+    component.updateMobileMenuVisibility(false);
+    expect(component.mobileMenuOpen()).toBe(false);
+    expect(document.documentElement.classList.contains("fcg-scroll-locked")).toBe(false);
   });
 
   it("should block page scroll while the mobile drawer is open", () => {
@@ -132,5 +141,32 @@ describe("HeaderComponent", () => {
     const drawer = fixture.debugElement.query(By.directive(Drawer)).componentInstance as Drawer;
 
     expect(drawer.blockScroll).toBe(true);
+  });
+
+  it("should logout the current user, close the mobile menu and navigate home", () => {
+    user.set({
+      id: "user-id",
+      keycloakUserId: "keycloak-user-id",
+      name: "Ana Gestora",
+      email: "ana@email.com",
+      role: "GestorONG",
+    });
+    const navigateByUrlSpy = vi
+      .spyOn(TestBed.inject(Router), "navigateByUrl")
+      .mockResolvedValue(true);
+    const fixture = TestBed.createComponent(HeaderComponent);
+    const component = fixture.componentInstance as unknown as {
+      mobileMenuOpen: () => boolean;
+      openMobileMenu: () => void;
+      logout: () => void;
+    };
+
+    component.openMobileMenu();
+    component.logout();
+
+    expect(authServiceMock.logout).toHaveBeenCalledOnce();
+    expect(component.mobileMenuOpen()).toBe(false);
+    expect(document.documentElement.classList.contains("fcg-scroll-locked")).toBe(false);
+    expect(navigateByUrlSpy).toHaveBeenCalledWith("/");
   });
 });
