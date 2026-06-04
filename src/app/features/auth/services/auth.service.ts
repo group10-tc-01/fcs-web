@@ -68,16 +68,12 @@ export class AuthService {
 
   login(request: ILoginRequest): Observable<IAuthenticatedUser> {
     return this.httpClient
-      .post<IApiResponse<ILoginResponse>>(
-        `${API_CONFIG.identityBaseUrl}/api/v1/auth/login`,
-        request,
-        {
-          withCredentials: true,
-        },
-      )
+      .post<
+        IApiResponse<ILoginResponse>
+      >(`${API_CONFIG.identityBaseUrl}/api/v1/auth/login`, request, this.createCredentialRequestOptions(true))
       .pipe(
         map((response) => this.unwrapResponse(response)),
-        switchMap(() => this.loadCurrentUser()),
+        switchMap(() => this.loadCurrentUser(true)),
       );
   }
 
