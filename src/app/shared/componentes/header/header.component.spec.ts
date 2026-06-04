@@ -1,6 +1,8 @@
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
+import { By } from "@angular/platform-browser";
 import { provideRouter } from "@angular/router";
 import { TestBed } from "@angular/core/testing";
+import { Drawer } from "primeng/drawer";
 
 import { HeaderComponent } from "./header.component";
 
@@ -56,8 +58,19 @@ describe("HeaderComponent", () => {
 
     component.openMobileMenu();
     expect(component.mobileMenuOpen()).toBe(true);
+    expect(document.documentElement.classList.contains("fcg-scroll-locked")).toBe(true);
 
     component.closeMobileMenu();
     expect(component.mobileMenuOpen()).toBe(false);
+    expect(document.documentElement.classList.contains("fcg-scroll-locked")).toBe(false);
+  });
+
+  it("should block page scroll while the mobile drawer is open", () => {
+    const fixture = TestBed.createComponent(HeaderComponent);
+    fixture.detectChanges();
+
+    const drawer = fixture.debugElement.query(By.directive(Drawer)).componentInstance as Drawer;
+
+    expect(drawer.blockScroll).toBe(true);
   });
 });

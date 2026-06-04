@@ -53,4 +53,37 @@ describe("AppComponent", () => {
     expect(compiled.textContent).toContain("Doar Agora");
     expect(compiled.textContent).toContain("Ver Transparência");
   });
+
+  it("should render the allowed landing sections from the React page", async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    await fixture.whenStable();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.textContent).toContain("Por que doar conosco?");
+    expect(compiled.textContent).toContain("100% Transparente");
+    expect(compiled.textContent).toContain("Comunidade Ativa");
+    expect(compiled.textContent).toContain("Impacto Comprovado");
+    expect(compiled.textContent).toContain("Pronto para fazer a diferença?");
+    expect(compiled.textContent).toContain("Criar Conta Gratuita");
+  });
+
+  it("should render the shared footer", async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    await fixture.whenStable();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector("fcg-footer")?.textContent).toContain("Links Rápidos");
+    expect(compiled.querySelector("fcg-footer")?.textContent).toContain("Contato");
+  });
+
+  it("should not render the omitted stats and active campaigns sections", async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    await fixture.whenStable();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.textContent).not.toContain("Total Arrecadado");
+    expect(compiled.textContent).not.toContain("Doadores Ativos");
+    expect(compiled.textContent).not.toContain("Campanhas Ativas");
+    expect(compiled.textContent).not.toContain("Escolha uma campanha e faça a diferença hoje");
+  });
 });
