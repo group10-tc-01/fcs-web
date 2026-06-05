@@ -9,7 +9,7 @@ import { routes } from "./app.routes";
 import { errorInterceptor } from "@core/interceptors/error.interceptor";
 import { httpErrorTestInterceptor } from "@core/interceptors/http-error-test.interceptor";
 import { GlobalErrorHandlerService } from "@core/services/global-error-handler.service";
-import { fcgPrimePreset } from "@core/config/theme.preset";
+import { FcsPrimePreset } from "@core/config/theme.preset";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,7 +24,7 @@ export const appConfig: ApplicationConfig = {
     },
     providePrimeNG({
       theme: {
-        preset: fcgPrimePreset,
+        preset: FcsPrimePreset,
         options: {
           darkModeSelector: ".dark",
         },

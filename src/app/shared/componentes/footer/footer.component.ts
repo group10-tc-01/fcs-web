@@ -7,7 +7,7 @@ interface IFooterLink {
 }
 
 @Component({
-  selector: "fcg-footer",
+  selector: "fcs-footer",
   imports: [RouterLink],
   templateUrl: "./footer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,

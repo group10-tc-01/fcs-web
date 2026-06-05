@@ -5,11 +5,11 @@ import { FooterComponent } from "@shared/componentes/footer/footer.component";
 import { HeaderComponent } from "@shared/componentes/header/header.component";
 
 @Component({
-  selector: "fcg-root",
+  selector: "fcs-root",
   imports: [FooterComponent, HeaderComponent, RouterOutlet, ToastModule],
   templateUrl: "./app.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  protected readonly title = "fcg-solidarity-web";
+  protected readonly title = "fcs-web";
 }

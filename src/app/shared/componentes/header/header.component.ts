@@ -20,7 +20,7 @@ interface INavigationItem {
 }
 
 @Component({
-  selector: "fcg-header",
+  selector: "fcs-header",
   imports: [ButtonModule, DrawerModule, RouterLink, RouterLinkActive],
   templateUrl: "./header.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -95,7 +95,7 @@ export class HeaderComponent implements OnDestroy {
     const root = this.document.documentElement;
     const body = this.document.body;
     const windowRef = this.document.defaultView;
-    const wasLocked = root.classList.contains("fcg-scroll-locked");
+    const wasLocked = root.classList.contains("fcs-scroll-locked");
 
     if (locked) {
       if (!wasLocked) {
@@ -103,13 +103,13 @@ export class HeaderComponent implements OnDestroy {
         body.style.top = `-${this.scrollLockTop}px`;
       }
 
-      root.classList.add("fcg-scroll-locked");
-      body.classList.add("fcg-scroll-locked");
+      root.classList.add("fcs-scroll-locked");
+      body.classList.add("fcs-scroll-locked");
       return;
     }
 
-    root.classList.remove("fcg-scroll-locked");
-    body.classList.remove("fcg-scroll-locked");
+    root.classList.remove("fcs-scroll-locked");
+    body.classList.remove("fcs-scroll-locked");
     body.style.removeProperty("top");
 
     if (wasLocked) {

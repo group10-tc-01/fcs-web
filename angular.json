@@ -8,7 +8,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "fcg-solidarity-web": {
+    "fcs-web": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -18,7 +18,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "fcg",
+      "prefix": "fcs",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
@@ -62,10 +62,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "fcg-solidarity-web:build:production"
+              "buildTarget": "fcs-solidarity-web:build:production"
             },
             "development": {
-              "buildTarget": "fcg-solidarity-web:build:development"
+              "buildTarget": "fcs-solidarity-web:build:development"
             }
           },
           "defaultConfiguration": "development"

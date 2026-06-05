@@ -108,7 +108,7 @@ const semanticColorScheme = {
   },
 };
 
-export const fcgPrimePreset = definePreset(Aura, {
+export const FcsPrimePreset = definePreset(Aura, {
   semantic: {
     primary: {
       50: "var(--primary)",

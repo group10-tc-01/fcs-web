@@ -12,7 +12,7 @@ interface ICampaignSummary {
 }
 
 @Component({
-  selector: "fcg-manager-dashboard",
+  selector: "fcs-manager-dashboard",
   imports: [ButtonModule],
   templateUrl: "./manager-dashboard.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,

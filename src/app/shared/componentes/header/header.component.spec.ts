@@ -119,19 +119,19 @@ describe("HeaderComponent", () => {
 
     component.openMobileMenu();
     expect(component.mobileMenuOpen()).toBe(true);
-    expect(document.documentElement.classList.contains("fcg-scroll-locked")).toBe(true);
+    expect(document.documentElement.classList.contains("fcs-scroll-locked")).toBe(true);
 
     component.closeMobileMenu();
     expect(component.mobileMenuOpen()).toBe(false);
-    expect(document.documentElement.classList.contains("fcg-scroll-locked")).toBe(false);
+    expect(document.documentElement.classList.contains("fcs-scroll-locked")).toBe(false);
 
     component.updateMobileMenuVisibility(true);
     expect(component.mobileMenuOpen()).toBe(true);
-    expect(document.documentElement.classList.contains("fcg-scroll-locked")).toBe(true);
+    expect(document.documentElement.classList.contains("fcs-scroll-locked")).toBe(true);
 
     component.updateMobileMenuVisibility(false);
     expect(component.mobileMenuOpen()).toBe(false);
-    expect(document.documentElement.classList.contains("fcg-scroll-locked")).toBe(false);
+    expect(document.documentElement.classList.contains("fcs-scroll-locked")).toBe(false);
   });
 
   it("should block page scroll while the mobile drawer is open", () => {
@@ -166,7 +166,7 @@ describe("HeaderComponent", () => {
 
     expect(authServiceMock.logout).toHaveBeenCalledOnce();
     expect(component.mobileMenuOpen()).toBe(false);
-    expect(document.documentElement.classList.contains("fcg-scroll-locked")).toBe(false);
+    expect(document.documentElement.classList.contains("fcs-scroll-locked")).toBe(false);
     expect(navigateByUrlSpy).toHaveBeenCalledWith("/");
   });
 });

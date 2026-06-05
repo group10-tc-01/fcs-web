@@ -12,7 +12,7 @@ interface IDonationSummary {
 }
 
 @Component({
-  selector: "fcg-donor-dashboard",
+  selector: "fcs-donor-dashboard",
   imports: [ButtonModule, RouterLink],
   templateUrl: "./donor-dashboard.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -17,7 +17,7 @@ import { AuthService } from "@features/auth/services/auth.service";
 type RegisterControlName = "nomeCompleto" | "email" | "cpf" | "senha" | "confirmarSenha";
 
 @Component({
-  selector: "fcg-register-page",
+  selector: "fcs-register-page",
   imports: [ButtonModule, MessageModule, ReactiveFormsModule, RouterLink],
   templateUrl: "./register-page.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,

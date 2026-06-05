@@ -31,9 +31,9 @@ describe("AppComponent", () => {
     await fixture.whenStable();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector("fcg-header")?.textContent).toContain("Conexão Solidária");
+    expect(compiled.querySelector("fcs-header")?.textContent).toContain("Conexão Solidária");
     expect(compiled.querySelector("router-outlet")).toBeTruthy();
-    expect(compiled.querySelector("fcg-footer")?.textContent).toContain("Links Rápidos");
+    expect(compiled.querySelector("fcs-footer")?.textContent).toContain("Links Rápidos");
   });
 
   it("should render the responsive toast host", async () => {
@@ -44,6 +44,6 @@ describe("AppComponent", () => {
     const toast = compiled.querySelector("p-toast");
 
     expect(toast?.getAttribute("position")).toBe("top-right");
-    expect(toast?.getAttribute("styleclass")).toBe("fcg-toast");
+    expect(toast?.getAttribute("styleclass")).toBe("fcs-toast");
   });
 });

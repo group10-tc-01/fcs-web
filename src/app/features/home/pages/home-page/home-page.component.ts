@@ -10,7 +10,7 @@ interface IFeatureCard {
 }
 
 @Component({
-  selector: "fcg-home-page",
+  selector: "fcs-home-page",
   imports: [ButtonModule, RouterLink],
   templateUrl: "./home-page.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
