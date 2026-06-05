@@ -20,7 +20,7 @@ interface IPlatformMetric {
 }
 
 @Component({
-  selector: "fcg-about-page",
+  selector: "fcs-about-page",
   imports: [ButtonModule, RouterLink],
   templateUrl: "./about-page.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,

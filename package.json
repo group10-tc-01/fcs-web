@@ -1,5 +1,5 @@
 {
-  "name": "fcg-solidarity-web",
+  "name": "fcs-web",
   "version": "0.0.0",
   "scripts": {
     "ng": "node --disable-warning=DEP0205 ./node_modules/@angular/cli/bin/ng",

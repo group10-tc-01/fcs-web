@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 @Component({
-  selector: "fcg-loading",
+  selector: "fcs-loading",
   templateUrl: "./loading.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

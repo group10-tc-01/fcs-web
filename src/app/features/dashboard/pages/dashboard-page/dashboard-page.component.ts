@@ -5,7 +5,7 @@ import { DonorDashboardComponent } from "@features/dashboard/components/donor-da
 import { ManagerDashboardComponent } from "@features/dashboard/components/manager-dashboard/manager-dashboard.component";
 
 @Component({
-  selector: "fcg-dashboard-page",
+  selector: "fcs-dashboard-page",
   imports: [DonorDashboardComponent, ManagerDashboardComponent],
   templateUrl: "./dashboard-page.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,

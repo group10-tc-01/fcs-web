@@ -11,7 +11,7 @@ import { AuthService } from "@features/auth/services/auth.service";
 type LoginControlName = "email" | "senha";
 
 @Component({
-  selector: "fcg-login-page",
+  selector: "fcs-login-page",
   imports: [ButtonModule, MessageModule, ReactiveFormsModule, RouterLink],
   templateUrl: "./login-page.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,

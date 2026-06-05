@@ -1,4 +1,4 @@
-# fcg-solidarity-web
+# fcs-web
 
 Interface web da plataforma **Conexão Solidária**, criada para apoiar o MVP da ONG **Esperança Solidária** com cadastro de **Doador**, autenticação, painel público de transparência, fluxo de doação e operação administrativa por **GestorONG**.
 
@@ -10,25 +10,25 @@ A Conexão Solidária conecta doadores a campanhas de arrecadação administrada
 
 Aplicações relacionadas:
 
-- `fcg-identity`: fachada de identidade, login, refresh, cadastro de **Doador** e perfil `/me`.
-- `fcg-campaigns`: gestão de campanhas e painel público de transparência.
-- `fcg-donations`: recebimento de intenções de doação.
-- `fcg-donation-worker`: processamento assíncrono de doações via Kafka.
-- `fcg-audit-logs`: consumo e persistência de auditoria em MongoDB.
-- `fcg-solidarity-infra`: ambiente integrado, Kubernetes, observabilidade e Azure.
+- `fcs-identity`: fachada de identidade, login, refresh, cadastro de **Doador** e perfil `/me`.
+- `fcs-campaigns`: gestão de campanhas e painel público de transparência.
+- `fcs-donations`: recebimento de intenções de doação.
+- `fcs-donation-worker`: processamento assíncrono de doações via Kafka.
+- `fcs-audit-logs`: consumo e persistência de auditoria em MongoDB.
+- `fcs-solidarity-infra`: ambiente integrado, Kubernetes, observabilidade e Azure.
 
 ## Responsabilidade do frontend
 
-O `fcg-solidarity-web` deve concentrar a experiência de uso da plataforma:
+O `fcs-web` deve concentrar a experiência de uso da plataforma:
 
 - Exibir o **Painel de Transparência** com campanhas ativas e valores arrecadados.
-- Permitir cadastro e login de **Doador** usando a `fcg-identity`.
+- Permitir cadastro e login de **Doador** usando a `fcs-identity`.
 - Permitir que um **Doador** autenticado envie uma **Intenção de Doação** para uma campanha ativa.
 - Permitir que um **Doador** acompanhe suas próprias doações.
 - Permitir que um **GestorONG** acesse fluxos administrativos de campanhas.
 - Tratar erros das APIs no envelope `ApiResponse<T>` adotado pelos serviços.
 
-O cliente não deve chamar o Keycloak diretamente. Toda autenticação passa pela `fcg-identity`, conforme as decisões de arquitetura.
+O cliente não deve chamar o Keycloak diretamente. Toda autenticação passa pela `fcs-identity`, conforme as decisões de arquitetura.
 
 ## Stack
 
@@ -166,7 +166,7 @@ Rotas operacionais e internas não devem ser expostas ao usuário final:
 
 ## Segurança
 
-- JWT emitido pelo Keycloak e obtido via `fcg-identity`.
+- JWT emitido pelo Keycloak e obtido via `fcs-identity`.
 - Roles canônicas: `Doador` e `GestorONG`.
 - Validação de JWT e RBAC permanece nas APIs.
 - O frontend deve usar a role apenas para experiência de navegação, nunca como única barreira de segurança.
@@ -181,4 +181,4 @@ Documentação de arquitetura no workspace principal:
 - `docs/architecture/endpoints.md`
 - `docs/architecture/endpoint-flows.md`
 - `docs/adr/0001-keycloak-behind-identity-api.md`
-- `docs/adr/0022-reuse-fcg-pipelines-for-ci-cd.md`
+- `docs/adr/0022-reuse-fcs-pipelines-for-ci-cd.md`
