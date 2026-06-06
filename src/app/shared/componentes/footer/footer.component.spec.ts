@@ -31,7 +31,7 @@ describe("FooterComponent", () => {
     }));
 
     expect(links).toContainEqual({ href: "/campanhas", text: "Campanhas" });
-    expect(links).toContainEqual({ href: "/transparencia", text: "Transparência" });
+    expect(links).toContainEqual({ href: "/transparencia", text: "Campanhas Ativas" });
     expect(links).toContainEqual({ href: "/sobre", text: "Sobre Nós" });
     expect(links).toContainEqual({ href: "/cadastro", text: "Seja um Doador" });
   });
