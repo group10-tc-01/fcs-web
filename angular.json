@@ -62,10 +62,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "fcs-solidarity-web:build:production"
+              "buildTarget": "fcs-web:build:production"
             },
             "development": {
-              "buildTarget": "fcs-solidarity-web:build:development"
+              "buildTarget": "fcs-web:build:development"
             }
           },
           "defaultConfiguration": "development"
