@@ -36,6 +36,7 @@ permissions:
   pull-requests: write
   checks: write
   security-events: write
+  packages: write
 
 jobs:
   ci:
