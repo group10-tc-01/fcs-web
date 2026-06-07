@@ -53,8 +53,8 @@ describe("HeaderComponent", () => {
       text: link.textContent?.trim(),
     }));
 
-    expect(links).toContainEqual({ href: "/campanhas", text: "Campanhas" });
-    expect(links).toContainEqual({ href: "/transparencia", text: "Transparência" });
+    expect(links).toContainEqual({ href: "/campanhas", text: "Campanhas Ativas" });
+    expect(links).not.toContainEqual({ href: "/campanhas", text: "Campanhas" });
     expect(links).toContainEqual({ href: "/sobre", text: "Sobre Nós" });
   });
 

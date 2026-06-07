@@ -44,16 +44,10 @@ export class HeaderComponent implements OnDestroy {
 
   protected readonly navigationItems: INavigationItem[] = [
     {
-      label: "Campanhas",
+      label: "Campanhas Ativas",
       route: "/campanhas",
-      icon: "pi pi-heart",
-      description: "Escolha uma causa para apoiar",
-    },
-    {
-      label: "Transparência",
-      route: "/transparencia",
       icon: "pi pi-chart-line",
-      description: "Veja a aplicação das doações",
+      description: "Acompanhe metas e valores arrecadados",
     },
     {
       label: "Sobre Nós",

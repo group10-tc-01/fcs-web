@@ -17,7 +17,7 @@ export class FooterComponent {
 
   protected readonly quickLinks: IFooterLink[] = [
     { label: "Campanhas", route: "/campanhas" },
-    { label: "Transparência", route: "/transparencia" },
+    { label: "Campanhas Ativas", route: "/transparencia" },
     { label: "Sobre Nós", route: "/sobre" },
     { label: "Seja um Doador", route: "/cadastro" },
   ];

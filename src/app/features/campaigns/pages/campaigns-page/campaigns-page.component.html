@@ -1,0 +1,102 @@
+<section class="border-border bg-card/40 border-b py-12" aria-labelledby="campaigns-title">
+  <div class="mx-auto grid w-full max-w-7xl gap-8 px-4 lg:grid-cols-[1fr_22rem] lg:items-end">
+    <div>
+      <p class="text-primary text-sm font-medium">Painel de transparência</p>
+      <h1 id="campaigns-title" class="text-foreground mt-2 text-3xl font-bold md:text-4xl">
+        Campanhas ativas
+      </h1>
+      <p class="text-muted-foreground mt-3 max-w-2xl">
+        Acompanhe as campanhas abertas para doação e o valor arrecadado até o momento.
+      </p>
+    </div>
+
+    <div class="border-border bg-background rounded-2xl border p-5">
+      <p class="text-muted-foreground text-sm font-medium">Total arrecadado nas campanhas ativas</p>
+      <p class="text-primary mt-2 text-2xl font-bold">{{ formatCurrency(totalRaised()) }}</p>
+      <p class="text-muted-foreground mt-1 text-xs">
+        {{ campaigns().length }} campanhas em andamento
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="py-12" aria-label="Lista de campanhas ativas">
+  <div class="mx-auto w-full max-w-7xl px-4">
+    @if (loading()) {
+      <fcs-loading label="Carregando campanhas..." />
+    } @else if (errorMessage()) {
+      <div class="border-destructive/30 bg-destructive/10 rounded-2xl border p-6">
+        <p class="text-foreground font-semibold">{{ errorMessage() }}</p>
+        <button type="button" pButton severity="secondary" class="mt-4 gap-2" (click)="reload()">
+          <i class="pi pi-refresh" pButtonIcon aria-hidden="true"></i>
+          <span pButtonLabel>Tentar novamente</span>
+        </button>
+      </div>
+    } @else if (campaigns().length === 0) {
+      <div class="border-border bg-card rounded-2xl border p-8 text-center">
+        <i class="pi pi-inbox text-muted-foreground text-3xl" aria-hidden="true"></i>
+        <h2 class="text-foreground mt-4 text-xl font-semibold">Nenhuma campanha ativa</h2>
+        <p class="text-muted-foreground mt-2">
+          Novas campanhas serão exibidas aqui assim que estiverem disponíveis.
+        </p>
+      </div>
+    } @else {
+      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        @for (campaign of campaigns(); track campaign.title) {
+          <article class="border-border bg-card rounded-2xl border p-6">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <span
+                  class="border-primary/30 bg-primary/10 text-primary rounded-full border px-2.5 py-1 text-xs font-medium"
+                >
+                  Ativa
+                </span>
+                <h2 class="text-foreground mt-4 text-xl font-semibold">{{ campaign.title }}</h2>
+              </div>
+
+              <span
+                class="bg-primary/10 text-primary flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
+                aria-hidden="true"
+              >
+                <i class="pi pi-heart"></i>
+              </span>
+            </div>
+
+            <dl class="mt-6 grid grid-cols-2 gap-4">
+              <div>
+                <dt class="text-muted-foreground text-xs font-medium">Meta financeira</dt>
+                <dd class="text-foreground mt-1 font-semibold">
+                  {{ formatCurrency(campaign.financialGoal) }}
+                </dd>
+              </div>
+              <div>
+                <dt class="text-muted-foreground text-xs font-medium">Valor arrecadado</dt>
+                <dd class="text-primary mt-1 font-semibold">
+                  {{ formatCurrency(campaign.totalAmountRaised) }}
+                </dd>
+              </div>
+            </dl>
+
+            <div class="mt-6">
+              <div class="mb-2 flex items-center justify-between gap-3">
+                <span class="text-muted-foreground text-xs font-medium">Progresso</span>
+                <span class="text-foreground text-xs font-semibold">{{ campaign.progress }}%</span>
+              </div>
+              <div class="bg-secondary h-2 overflow-hidden rounded-full">
+                <div
+                  class="bg-primary h-full rounded-full"
+                  [style.width.%]="campaign.progress"
+                ></div>
+              </div>
+            </div>
+
+            <a routerLink="/login" pButton class="mt-6 w-full justify-center gap-2">
+              <i class="pi pi-heart" pButtonIcon aria-hidden="true"></i>
+              <span pButtonLabel>Doar para campanha</span>
+            </a>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</section>

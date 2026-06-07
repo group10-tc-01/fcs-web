@@ -34,6 +34,18 @@ export const routes: Routes = [
       ),
   },
   {
+    path: "campanhas",
+    loadComponent: () =>
+      import("./features/campaigns/pages/campaigns-page/campaigns-page.component").then(
+        (component) => component.CampaignsPageComponent,
+      ),
+  },
+  {
+    path: "transparencia",
+    redirectTo: "campanhas",
+    pathMatch: "full",
+  },
+  {
     path: "dashboard",
     canActivate: [authGuard],
     loadComponent: () =>
