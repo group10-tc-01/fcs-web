@@ -7,7 +7,7 @@ import { SKIP_ERROR_NOTIFICATION } from "@core/interceptors/error.interceptor";
 import { AuthService, IAuthenticatedUser, ILoginResponse } from "./auth.service";
 
 describe("AuthService", () => {
-  const apiBaseUrl = API_CONFIG.identityBaseUrl;
+  const apiBaseUrl = API_CONFIG.bffBaseUrl;
   const loginResponse: ILoginResponse = {
     accessToken: "access-token",
     refreshToken: "refresh-token",

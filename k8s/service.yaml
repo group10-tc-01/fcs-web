@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fcs-web-service
+  namespace: fcs-web
+  labels:
+    app.kubernetes.io/name: fcs-web
+    app.kubernetes.io/part-of: fcs
+spec:
+  selector:
+    app.kubernetes.io/name: fcs-web
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

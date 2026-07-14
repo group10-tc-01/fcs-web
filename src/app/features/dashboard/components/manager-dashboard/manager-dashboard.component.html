@@ -2,104 +2,73 @@
   <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
     <div>
       <p class="text-primary text-sm font-medium">Área do gestor</p>
-      <h1 id="dashboard-title" class="text-foreground mt-1 text-3xl font-bold">Painel do Gestor</h1>
+      <h1 id="dashboard-title" class="text-foreground mt-1 text-3xl font-bold">Painel do gestor</h1>
       <p class="text-muted-foreground mt-2">
         Bem-vindo(a), {{ user().name }}. Gerencie as campanhas da ONG.
       </p>
     </div>
-
-    <button type="button" pButton class="w-full justify-center gap-2 md:w-auto">
+    <a routerLink="/gestao/campanhas" pButton class="w-full justify-center gap-2 md:w-auto">
       <i class="pi pi-plus" pButtonIcon aria-hidden="true"></i>
-      <span pButtonLabel>Nova Campanha</span>
-    </button>
+      <span pButtonLabel>Nova campanha</span>
+    </a>
   </div>
 
-  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
     <article class="border-border bg-card rounded-2xl border p-5">
-      <div class="flex items-center justify-between gap-4">
-        <p class="text-muted-foreground text-sm font-medium">Total Arrecadado</p>
-        <i class="pi pi-chart-line text-primary" aria-hidden="true"></i>
-      </div>
-      <p class="text-foreground mt-3 text-2xl font-bold">R$ 59.300,00</p>
+      <p class="text-muted-foreground text-sm font-medium">Total arrecadado</p>
+      <p class="text-foreground mt-3 text-2xl font-bold">{{ formatCurrency(totalRaised()) }}</p>
     </article>
-
     <article class="border-border bg-card rounded-2xl border p-5">
-      <div class="flex items-center justify-between gap-4">
-        <p class="text-muted-foreground text-sm font-medium">Campanhas Ativas</p>
-        <i class="pi pi-heart text-accent" aria-hidden="true"></i>
-      </div>
-      <p class="text-foreground mt-3 text-2xl font-bold">2</p>
+      <p class="text-muted-foreground text-sm font-medium">Campanhas ativas</p>
+      <p class="text-foreground mt-3 text-2xl font-bold">{{ activeCampaigns() }}</p>
     </article>
-
     <article class="border-border bg-card rounded-2xl border p-5">
-      <div class="flex items-center justify-between gap-4">
-        <p class="text-muted-foreground text-sm font-medium">Total de Doadores</p>
-        <i class="pi pi-users text-chart-2" aria-hidden="true"></i>
-      </div>
-      <p class="text-foreground mt-3 text-2xl font-bold">1.248</p>
-    </article>
-
-    <article class="border-border bg-card rounded-2xl border p-5">
-      <div class="flex items-center justify-between gap-4">
-        <p class="text-muted-foreground text-sm font-medium">Total de Campanhas</p>
-        <i class="pi pi-flag text-chart-4" aria-hidden="true"></i>
-      </div>
-      <p class="text-foreground mt-3 text-2xl font-bold">{{ campaigns.length }}</p>
+      <p class="text-muted-foreground text-sm font-medium">Total de campanhas</p>
+      <p class="text-foreground mt-3 text-2xl font-bold">{{ campaigns().length }}</p>
     </article>
   </div>
 
   <section
-    class="border-border bg-card rounded-2xl border"
+    class="border-border bg-card overflow-hidden rounded-2xl border"
     aria-labelledby="campaign-management-title"
   >
     <div class="border-border border-b p-5">
       <h2 id="campaign-management-title" class="text-foreground text-xl font-semibold">
-        Gerenciar Campanhas
+        Campanhas
       </h2>
       <p class="text-muted-foreground mt-1 text-sm">Visualize e edite todas as campanhas da ONG.</p>
     </div>
-
     <div class="overflow-x-auto">
       <table class="w-full min-w-[48rem] text-left text-sm">
         <thead class="border-border text-muted-foreground border-b">
           <tr>
-            <th scope="col" class="px-5 py-3 font-medium">Campanha</th>
-            <th scope="col" class="px-5 py-3 font-medium">Status</th>
-            <th scope="col" class="px-5 py-3 font-medium">Meta</th>
-            <th scope="col" class="px-5 py-3 font-medium">Arrecadado</th>
-            <th scope="col" class="px-5 py-3 font-medium">Progresso</th>
-            <th scope="col" class="px-5 py-3 text-right font-medium">Ações</th>
+            <th class="px-5 py-3">Campanha</th>
+            <th class="px-5 py-3">Status</th>
+            <th class="px-5 py-3">Meta</th>
+            <th class="px-5 py-3">Arrecadado</th>
+            <th class="px-5 py-3">Progresso</th>
+            <th class="px-5 py-3 text-right">Ação</th>
           </tr>
         </thead>
         <tbody class="divide-border divide-y">
-          @for (campaign of campaigns; track campaign.title) {
+          @for (campaign of campaigns(); track campaign.id) {
             <tr>
               <td class="text-foreground px-5 py-4 font-medium">{{ campaign.title }}</td>
-              <td class="px-5 py-4">
-                <span
-                  class="border-primary/30 bg-primary/10 text-primary rounded-full border px-2.5 py-1 text-xs"
-                >
-                  {{ campaign.status }}
-                </span>
+              <td class="px-5 py-4">{{ campaign.status }}</td>
+              <td class="px-5 py-4">{{ formatCurrency(campaign.financialGoal) }}</td>
+              <td class="text-primary px-5 py-4 font-semibold">
+                {{ formatCurrency(campaign.totalAmountRaised) }}
               </td>
-              <td class="text-muted-foreground px-5 py-4">{{ campaign.goal }}</td>
-              <td class="text-primary px-5 py-4 font-semibold">{{ campaign.raised }}</td>
-              <td class="px-5 py-4">
-                <div class="flex min-w-32 items-center gap-2">
-                  <div class="bg-secondary h-2 flex-1 overflow-hidden rounded-full">
-                    <div
-                      class="bg-primary h-full rounded-full"
-                      [style.width.%]="campaign.progress"
-                    ></div>
-                  </div>
-                  <span class="text-muted-foreground text-xs">{{ campaign.progress }}%</span>
-                </div>
-              </td>
+              <td class="px-5 py-4">{{ progress(campaign) }}%</td>
               <td class="px-5 py-4 text-right">
-                <button type="button" pButton severity="secondary" variant="text" size="small">
-                  <i class="pi pi-pencil" pButtonIcon aria-hidden="true"></i>
-                  <span pButtonLabel>Editar</span>
-                </button>
+                <a
+                  routerLink="/gestao/campanhas"
+                  pButton
+                  severity="secondary"
+                  variant="text"
+                  size="small"
+                  ><span pButtonLabel>Editar</span></a
+                >
               </td>
             </tr>
           }

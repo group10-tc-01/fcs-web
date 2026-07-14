@@ -7,6 +7,7 @@ import { providePrimeNG } from "primeng/config";
 
 import { routes } from "./app.routes";
 import { errorInterceptor } from "@core/interceptors/error.interceptor";
+import { authInterceptor } from "@core/interceptors/auth.interceptor";
 import { httpErrorTestInterceptor } from "@core/interceptors/http-error-test.interceptor";
 import { GlobalErrorHandlerService } from "@core/services/global-error-handler.service";
 import { FcsPrimePreset } from "@core/config/theme.preset";
@@ -15,7 +16,9 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([errorInterceptor, httpErrorTestInterceptor])),
+    provideHttpClient(
+      withInterceptors([authInterceptor, errorInterceptor, httpErrorTestInterceptor]),
+    ),
     provideRouter(routes),
     MessageService,
     {
