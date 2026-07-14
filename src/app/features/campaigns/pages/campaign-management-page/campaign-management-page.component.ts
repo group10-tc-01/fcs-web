@@ -1,7 +1,15 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from "@angular/core";
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import {
+  AbstractControl,
+  FormControl,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from "@angular/forms";
 import { finalize } from "rxjs";
 import { ButtonModule } from "primeng/button";
+import { DatePickerModule } from "primeng/datepicker";
 import { MessageModule } from "primeng/message";
 
 import {
@@ -13,7 +21,7 @@ import { NotificationService } from "@core/services/notification.service";
 
 @Component({
   selector: "fcs-campaign-management-page",
-  imports: [ButtonModule, MessageModule, ReactiveFormsModule],
+  imports: [ButtonModule, DatePickerModule, MessageModule, ReactiveFormsModule],
   templateUrl: "./campaign-management-page.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -30,13 +38,16 @@ export class CampaignManagementPageComponent {
   protected readonly selectedCampaign = computed(() =>
     this.campaigns().find((campaign) => campaign.id === this.selectedCampaignId()),
   );
-  protected readonly campaignForm = this.formBuilder.group({
-    title: ["", [Validators.required, Validators.maxLength(160)]],
-    description: ["", [Validators.required, Validators.maxLength(2000)]],
-    startDate: ["", Validators.required],
-    endDate: ["", Validators.required],
-    financialGoal: [0, [Validators.required, Validators.min(1)]],
-  });
+  protected readonly campaignForm = this.formBuilder.group(
+    {
+      title: ["", [Validators.required, Validators.maxLength(200)]],
+      description: ["", [Validators.required, Validators.maxLength(2000)]],
+      startDate: new FormControl<Date | null>(null, Validators.required),
+      endDate: new FormControl<Date | null>(null, Validators.required),
+      financialGoal: [0, [Validators.required, Validators.min(1)]],
+    },
+    { validators: endDateAfterStartDate },
+  );
 
   constructor() {
     this.loadCampaigns();
@@ -73,8 +84,8 @@ export class CampaignManagementPageComponent {
     this.campaignForm.setValue({
       title: campaign.title,
       description: campaign.description,
-      startDate: this.toDateInput(campaign.startDate),
-      endDate: this.toDateInput(campaign.endDate),
+      startDate: this.toDate(campaign.startDate),
+      endDate: this.toDate(campaign.endDate),
       financialGoal: campaign.financialGoal,
     });
   }
@@ -103,6 +114,15 @@ export class CampaignManagementPageComponent {
       : 0;
   }
 
+  protected minimumEndDate(): Date | null {
+    const startDate = this.campaignForm.controls.startDate.value;
+    if (startDate === null) {
+      return null;
+    }
+
+    return new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 1);
+  }
+
   private loadCampaigns(): void {
     this.loading.set(true);
     this.errorMessage.set("");
@@ -123,8 +143,8 @@ export class CampaignManagementPageComponent {
     this.campaignForm.reset({
       title: "",
       description: "",
-      startDate: "",
-      endDate: "",
+      startDate: null,
+      endDate: null,
       financialGoal: 0,
     });
   }
@@ -133,12 +153,23 @@ export class CampaignManagementPageComponent {
     const value = this.campaignForm.getRawValue();
     return {
       ...value,
-      startDate: new Date(value.startDate).toISOString(),
-      endDate: new Date(value.endDate).toISOString(),
+      startDate: value.startDate!.toISOString(),
+      endDate: value.endDate!.toISOString(),
     };
   }
 
-  private toDateInput(value: string): string {
-    return value ? value.slice(0, 10) : "";
+  private toDate(value: string): Date | null {
+    return value ? new Date(value) : null;
   }
+}
+
+function endDateAfterStartDate(control: AbstractControl): ValidationErrors | null {
+  const startDate = control.get("startDate")?.value;
+  const endDate = control.get("endDate")?.value;
+
+  if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
+    return null;
+  }
+
+  return endDate.getTime() > startDate.getTime() ? null : { endDateBeforeStartDate: true };
 }
