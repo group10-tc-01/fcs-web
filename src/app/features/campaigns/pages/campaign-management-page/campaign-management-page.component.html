@@ -31,32 +31,94 @@
         <span class="text-foreground text-sm font-medium">Título</span>
         <input
           formControlName="title"
+          maxlength="200"
+          aria-describedby="campaign-title-help"
+          [attr.aria-invalid]="
+            campaignForm.controls.title.invalid && campaignForm.controls.title.touched
+          "
           class="border-input bg-background text-foreground mt-2 w-full rounded-lg border px-3 py-2.5"
         />
+        <span
+          id="campaign-title-help"
+          class="text-muted-foreground mt-1 flex justify-between text-xs"
+        >
+          @if (
+            campaignForm.controls.title.touched && campaignForm.controls.title.hasError("required")
+          ) {
+            <span>Informe o título da campanha.</span>
+          } @else if (
+            campaignForm.controls.title.touched && campaignForm.controls.title.hasError("maxlength")
+          ) {
+            <span>Use no máximo 200 caracteres.</span>
+          } @else {
+            <span></span>
+          }
+          <span>{{ campaignForm.controls.title.value.length }}/200</span>
+        </span>
       </label>
       <label class="block md:col-span-2">
         <span class="text-foreground text-sm font-medium">Descrição</span>
         <textarea
           formControlName="description"
           rows="4"
+          maxlength="2000"
+          aria-describedby="campaign-description-help"
+          [attr.aria-invalid]="
+            campaignForm.controls.description.invalid && campaignForm.controls.description.touched
+          "
           class="border-input bg-background text-foreground mt-2 w-full rounded-lg border px-3 py-2.5"
         ></textarea>
+        <span
+          id="campaign-description-help"
+          class="text-muted-foreground mt-1 flex justify-between text-xs"
+        >
+          @if (
+            campaignForm.controls.description.touched &&
+            campaignForm.controls.description.hasError("required")
+          ) {
+            <span>Informe a descrição da campanha.</span>
+          } @else if (
+            campaignForm.controls.description.touched &&
+            campaignForm.controls.description.hasError("maxlength")
+          ) {
+            <span>Use no máximo 2.000 caracteres.</span>
+          } @else {
+            <span></span>
+          }
+          <span>{{ campaignForm.controls.description.value.length }}/2.000</span>
+        </span>
       </label>
-      <label class="block">
+      <label class="block" for="campaign-start-date">
         <span class="text-foreground text-sm font-medium">Início</span>
-        <input
+        <p-datepicker
           formControlName="startDate"
-          type="date"
-          class="border-input bg-background text-foreground mt-2 w-full rounded-lg border px-3 py-2.5"
+          inputId="campaign-start-date"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          [showClear]="true"
+          styleClass="mt-2 w-full"
+          inputStyleClass="w-full"
+          appendTo="body"
         />
       </label>
-      <label class="block">
+      <label class="block" for="campaign-end-date">
         <span class="text-foreground text-sm font-medium">Término</span>
-        <input
+        <p-datepicker
           formControlName="endDate"
-          type="date"
-          class="border-input bg-background text-foreground mt-2 w-full rounded-lg border px-3 py-2.5"
+          inputId="campaign-end-date"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          [showClear]="true"
+          [minDate]="minimumEndDate()"
+          styleClass="mt-2 w-full"
+          inputStyleClass="w-full"
+          appendTo="body"
         />
+        @if (campaignForm.touched && campaignForm.hasError("endDateBeforeStartDate")) {
+          <span class="mt-1 block text-xs text-red-500">
+            A data de término deve ser posterior à data de início.
+          </span>
+        }
       </label>
       <label class="block">
         <span class="text-foreground text-sm font-medium">Meta financeira</span>
