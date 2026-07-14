@@ -1,0 +1,97 @@
+<main class="mx-auto w-full max-w-6xl space-y-10 px-4 py-10">
+  <header class="border-border border-b pb-8">
+    <p class="text-primary text-sm font-medium">Área do doador</p>
+    <h1 class="text-foreground mt-2 text-3xl font-bold">Fazer uma doação</h1>
+    <p class="text-muted-foreground mt-2 max-w-2xl">
+      Escolha uma campanha ativa e acompanhe o processamento das suas contribuições.
+    </p>
+  </header>
+
+  @if (errorMessage()) {
+    <p-message severity="error">{{ errorMessage() }}</p-message>
+  }
+
+  @if (loading()) {
+    <p class="text-muted-foreground">Carregando suas informações…</p>
+  } @else {
+    <section class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]" aria-label="Nova doação">
+      <div>
+        <h2 class="text-foreground text-xl font-semibold">Campanha e valor</h2>
+        <form class="mt-5 space-y-5" [formGroup]="donationForm" (ngSubmit)="submit()">
+          <label class="block">
+            <span class="text-foreground text-sm font-medium">Campanha ativa</span>
+            <select
+              formControlName="campaignId"
+              class="border-input bg-background text-foreground mt-2 w-full rounded-lg border px-3 py-2.5"
+            >
+              <option value="">Selecione uma campanha</option>
+              @for (campaign of campaigns(); track campaign.id) {
+                <option [value]="campaign.id">
+                  {{ campaign.title }} · meta {{ formatCurrency(campaign.financialGoal) }}
+                </option>
+              }
+            </select>
+          </label>
+          <label class="block">
+            <span class="text-foreground text-sm font-medium">Valor da doação</span>
+            <input
+              formControlName="amount"
+              type="number"
+              min="1"
+              step="0.01"
+              class="border-input bg-background text-foreground mt-2 w-full rounded-lg border px-3 py-2.5"
+            />
+          </label>
+          <button type="submit" pButton [disabled]="submitting()" class="w-full justify-center">
+            <span pButtonLabel>{{
+              submitting() ? "Registrando…" : "Registrar intenção de doação"
+            }}</span>
+          </button>
+        </form>
+      </div>
+      <aside class="border-border border-l pl-6">
+        <p class="text-muted-foreground text-sm">Total das suas doações</p>
+        <p class="text-foreground mt-2 text-3xl font-bold">{{ formatCurrency(totalDonated()) }}</p>
+        <p class="text-muted-foreground mt-3 text-sm">
+          A confirmação ocorre após o processamento assíncrono.
+        </p>
+      </aside>
+    </section>
+
+    <section class="border-border border-t pt-8" aria-labelledby="donation-history-title">
+      <h2 id="donation-history-title" class="text-foreground text-xl font-semibold">
+        Histórico de doações
+      </h2>
+      @if (donations().length === 0) {
+        <p class="text-muted-foreground mt-3">Você ainda não possui doações registradas.</p>
+      } @else {
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full min-w-[38rem] text-left text-sm">
+            <thead class="border-border text-muted-foreground border-b">
+              <tr>
+                <th class="py-3">Valor</th>
+                <th class="py-3">Status</th>
+                <th class="py-3">Criada em</th>
+                <th class="py-3">Processamento</th>
+              </tr>
+            </thead>
+            <tbody class="divide-border divide-y">
+              @for (donation of donations(); track donation.id) {
+                <tr>
+                  <td class="text-foreground py-4 font-medium">
+                    {{ formatCurrency(donation.amount) }}
+                  </td>
+                  <td class="py-4">{{ donation.status }}</td>
+                  <td class="text-muted-foreground py-4">{{ formatDate(donation.createdAt) }}</td>
+                  <td class="text-muted-foreground py-4">
+                    {{ donation.processedAt ? formatDate(donation.processedAt) : "Aguardando" }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
+  }
+</main>

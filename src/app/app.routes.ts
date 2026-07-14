@@ -1,6 +1,7 @@
 import { Routes } from "@angular/router";
 import { authGuard } from "@core/guards/auth.guard";
 import { guestGuard } from "@core/guards/guest.guard";
+import { managerGuard } from "@core/guards/manager.guard";
 
 export const routes: Routes = [
   {
@@ -53,4 +54,21 @@ export const routes: Routes = [
         (component) => component.DashboardPageComponent,
       ),
   },
+  {
+    path: "doacoes",
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import("./features/donations/pages/donations-page/donations-page.component").then(
+        (component) => component.DonationsPageComponent,
+      ),
+  },
+  {
+    path: "gestao/campanhas",
+    canActivate: [managerGuard],
+    loadComponent: () =>
+      import("./features/campaigns/pages/campaign-management-page/campaign-management-page.component").then(
+        (component) => component.CampaignManagementPageComponent,
+      ),
+  },
+  { path: "**", redirectTo: "" },
 ];

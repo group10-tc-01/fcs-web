@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fcs-web
+  namespace: fcs-web
+spec:
+  ingressClassName: fcs-traefik
+  tls:
+    - hosts:
+        - fcs-web.flaviojcf.com.br
+      secretName: fcs-web-tls
+  rules:
+    - host: fcs-web.flaviojcf.com.br
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: fcs-web-service
+                port:
+                  number: 80

@@ -53,16 +53,18 @@ interface IApiResponse<T> {
 export class AuthService {
   private readonly httpClient = inject(HttpClient);
   private readonly user = signal<IAuthenticatedUser | null>(null);
+  private readonly token = signal<string | null>(null);
 
   readonly currentUser = computed(() => this.user());
   readonly isAuthenticated = computed(() => this.currentUser() !== null);
   readonly isManager = computed(() => this.currentUser()?.role === "GestorONG");
+  readonly accessToken = computed(() => this.token());
 
   register(request: IRegisterRequest): Observable<IRegisterResponse> {
     return this.httpClient
       .post<
         IApiResponse<IRegisterResponse>
-      >(`${API_CONFIG.identityBaseUrl}/api/v1/auth/register/donor`, request, { withCredentials: true })
+      >(`${API_CONFIG.bffBaseUrl}/api/v1/auth/register/donor`, request, { withCredentials: true })
       .pipe(map((response) => this.unwrapResponse(response)));
   }
 
@@ -70,21 +72,25 @@ export class AuthService {
     return this.httpClient
       .post<
         IApiResponse<ILoginResponse>
-      >(`${API_CONFIG.identityBaseUrl}/api/v1/auth/login`, request, this.createCredentialRequestOptions(true))
+      >(`${API_CONFIG.bffBaseUrl}/api/v1/auth/login`, request, this.createCredentialRequestOptions(true))
       .pipe(
         map((response) => this.unwrapResponse(response)),
+        tap((response) => this.token.set(response.accessToken)),
         switchMap(() => this.loadCurrentUser(true)),
       );
   }
 
   logout(): Observable<void> {
     return this.httpClient
-      .post<void>(`${API_CONFIG.identityBaseUrl}/api/v1/auth/logout`, null, {
+      .post<void>(`${API_CONFIG.bffBaseUrl}/api/v1/auth/logout`, null, {
         withCredentials: true,
       })
       .pipe(
         catchError(() => of(undefined)),
-        tap(() => this.user.set(null)),
+        tap(() => {
+          this.user.set(null);
+          this.token.set(null);
+        }),
       );
   }
 
@@ -109,15 +115,18 @@ export class AuthService {
     return this.httpClient
       .post<
         IApiResponse<ILoginResponse>
-      >(`${API_CONFIG.identityBaseUrl}/api/v1/auth/refresh`, { refreshToken: "" }, this.createCredentialRequestOptions(silent))
-      .pipe(map((response) => this.unwrapResponse(response)));
+      >(`${API_CONFIG.bffBaseUrl}/api/v1/auth/refresh`, { refreshToken: "" }, this.createCredentialRequestOptions(silent))
+      .pipe(
+        map((response) => this.unwrapResponse(response)),
+        tap((response) => this.token.set(response.accessToken)),
+      );
   }
 
   private loadCurrentUser(silent = false): Observable<IAuthenticatedUser> {
     return this.httpClient
       .get<
         IApiResponse<unknown>
-      >(`${API_CONFIG.identityBaseUrl}/api/v1/me`, this.createCredentialRequestOptions(silent))
+      >(`${API_CONFIG.bffBaseUrl}/api/v1/me`, this.createCredentialRequestOptions(silent))
       .pipe(
         map((response) => this.normalizeUser(this.unwrapResponse(response))),
         tap((user) => this.user.set(user)),

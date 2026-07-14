@@ -1,0 +1,156 @@
+<main class="mx-auto w-full max-w-7xl space-y-10 px-4 py-10">
+  <header class="border-border border-b pb-8">
+    <p class="text-primary text-sm font-medium">Área do gestor</p>
+    <h1 class="text-foreground mt-2 text-3xl font-bold">Gerenciar campanhas</h1>
+    <p class="text-muted-foreground mt-2 max-w-2xl">
+      Crie, edite, conclua ou cancele as campanhas da ONG.
+    </p>
+  </header>
+
+  @if (errorMessage()) {
+    <p-message severity="error">{{ errorMessage() }}</p-message>
+  }
+
+  <section
+    class="border-border bg-card rounded-2xl border p-6"
+    aria-labelledby="campaign-form-title"
+  >
+    <div class="flex items-center justify-between gap-4">
+      <h2 id="campaign-form-title" class="text-foreground text-xl font-semibold">
+        {{ selectedCampaign() ? "Editar campanha" : "Nova campanha" }}
+      </h2>
+      @if (selectedCampaign()) {
+        <button type="button" pButton severity="secondary" variant="text" (click)="cancelEdit()">
+          <span pButtonLabel>Cancelar edição</span>
+        </button>
+      }
+    </div>
+
+    <form class="mt-6 grid gap-5 md:grid-cols-2" [formGroup]="campaignForm" (ngSubmit)="submit()">
+      <label class="block md:col-span-2">
+        <span class="text-foreground text-sm font-medium">Título</span>
+        <input
+          formControlName="title"
+          class="border-input bg-background text-foreground mt-2 w-full rounded-lg border px-3 py-2.5"
+        />
+      </label>
+      <label class="block md:col-span-2">
+        <span class="text-foreground text-sm font-medium">Descrição</span>
+        <textarea
+          formControlName="description"
+          rows="4"
+          class="border-input bg-background text-foreground mt-2 w-full rounded-lg border px-3 py-2.5"
+        ></textarea>
+      </label>
+      <label class="block">
+        <span class="text-foreground text-sm font-medium">Início</span>
+        <input
+          formControlName="startDate"
+          type="date"
+          class="border-input bg-background text-foreground mt-2 w-full rounded-lg border px-3 py-2.5"
+        />
+      </label>
+      <label class="block">
+        <span class="text-foreground text-sm font-medium">Término</span>
+        <input
+          formControlName="endDate"
+          type="date"
+          class="border-input bg-background text-foreground mt-2 w-full rounded-lg border px-3 py-2.5"
+        />
+      </label>
+      <label class="block">
+        <span class="text-foreground text-sm font-medium">Meta financeira</span>
+        <input
+          formControlName="financialGoal"
+          type="number"
+          min="1"
+          step="0.01"
+          class="border-input bg-background text-foreground mt-2 w-full rounded-lg border px-3 py-2.5"
+        />
+      </label>
+      <div class="flex items-end">
+        <button type="submit" pButton [disabled]="submitting()" class="w-full justify-center">
+          <span pButtonLabel>{{
+            submitting() ? "Salvando…" : selectedCampaign() ? "Salvar campanha" : "Criar campanha"
+          }}</span>
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <section
+    class="border-border bg-card overflow-hidden rounded-2xl border"
+    aria-labelledby="campaign-list-title"
+  >
+    <div class="border-border border-b p-6">
+      <h2 id="campaign-list-title" class="text-foreground text-xl font-semibold">
+        Campanhas cadastradas
+      </h2>
+    </div>
+    @if (loading()) {
+      <p class="text-muted-foreground p-6">Carregando campanhas…</p>
+    } @else if (campaigns().length === 0) {
+      <p class="text-muted-foreground p-6">Nenhuma campanha cadastrada.</p>
+    } @else {
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[56rem] text-left text-sm">
+          <thead class="border-border text-muted-foreground border-b">
+            <tr>
+              <th class="px-6 py-3">Campanha</th>
+              <th class="px-6 py-3">Status</th>
+              <th class="px-6 py-3">Meta</th>
+              <th class="px-6 py-3">Arrecadado</th>
+              <th class="px-6 py-3">Progresso</th>
+              <th class="px-6 py-3 text-right">Ações</th>
+            </tr>
+          </thead>
+          <tbody class="divide-border divide-y">
+            @for (campaign of campaigns(); track campaign.id) {
+              <tr>
+                <td class="text-foreground px-6 py-4 font-medium">{{ campaign.title }}</td>
+                <td class="px-6 py-4">{{ campaign.status }}</td>
+                <td class="px-6 py-4">{{ formatCurrency(campaign.financialGoal) }}</td>
+                <td class="px-6 py-4">{{ formatCurrency(campaign.totalAmountRaised) }}</td>
+                <td class="px-6 py-4">{{ progress(campaign) }}%</td>
+                <td class="space-x-2 px-6 py-4 text-right">
+                  <button
+                    type="button"
+                    pButton
+                    severity="secondary"
+                    variant="text"
+                    size="small"
+                    (click)="edit(campaign)"
+                  >
+                    <span pButtonLabel>Editar</span>
+                  </button>
+                  @if (campaign.status === "Active") {
+                    <button
+                      type="button"
+                      pButton
+                      severity="success"
+                      variant="text"
+                      size="small"
+                      (click)="changeStatus(campaign, 'Completed')"
+                    >
+                      <span pButtonLabel>Concluir</span>
+                    </button>
+                    <button
+                      type="button"
+                      pButton
+                      severity="danger"
+                      variant="text"
+                      size="small"
+                      (click)="changeStatus(campaign, 'Canceled')"
+                    >
+                      <span pButtonLabel>Cancelar</span>
+                    </button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+</main>

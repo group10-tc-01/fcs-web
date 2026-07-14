@@ -1,4 +1,11 @@
 export const API_CONFIG = {
-  identityBaseUrl: `${globalThis.location.protocol}//${globalThis.location.hostname}:64534`,
-  campaignBaseUrl: `${globalThis.location.protocol}//${globalThis.location.hostname}:55904`,
+  bffBaseUrl: isLocalHost()
+    ? `${globalThis.location.protocol}//${globalThis.location.hostname}:5004`
+    : "https://fcs-bff.flaviojcf.com.br",
 } as const;
+
+function isLocalHost(): boolean {
+  return (
+    globalThis.location.hostname === "localhost" || globalThis.location.hostname === "127.0.0.1"
+  );
+}
