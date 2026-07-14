@@ -28,6 +28,13 @@ export interface ICampaignPage {
   totalCount: number;
 }
 
+interface IPagedResponse<T> {
+  items: T[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+}
+
 export interface ICampaignInput {
   title: string;
   description: string;
@@ -51,9 +58,9 @@ export class CampaignService {
   getTransparencyCampaigns(): Observable<ITransparencyCampaign[]> {
     return this.httpClient
       .get<
-        IApiResponse<ITransparencyCampaign[]>
+        IApiResponse<IPagedResponse<ITransparencyCampaign>>
       >(`${API_CONFIG.bffBaseUrl}/api/v1/transparency/campaigns`)
-      .pipe(map((response) => this.unwrapResponse(response)));
+      .pipe(map((response) => this.unwrapResponse(response).items));
   }
 
   getActiveCampaigns(): Observable<ICampaignPage> {
