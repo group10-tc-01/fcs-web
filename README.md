@@ -14,6 +14,7 @@ Aplicações relacionadas:
 - `fcs-campaign`: gestão de campanhas e painel público de transparência.
 - `fcs-donations`: recebimento de intenções de doação.
 - `fcs-donation-worker`: processamento assíncrono de doações via Kafka.
+- `fcs-notifications`: envio de e-mails transacionais a partir de eventos Kafka.
 - `fcs-audit-logs`: consumo e persistência de auditoria em MongoDB.
 - `fcs-bff`: fachada HTTP que expõe as rotas consumidas pelo frontend.
 - `fcs-infra`: ambiente integrado VPS/K3s, observabilidade e componentes compartilhados.
