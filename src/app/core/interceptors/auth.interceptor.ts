@@ -1,5 +1,6 @@
-import { HttpInterceptorFn } from "@angular/common/http";
+import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
 import { inject } from "@angular/core";
+import { catchError, switchMap, throwError } from "rxjs";
 
 import { API_CONFIG } from "@core/config/api.config";
 import { AuthService } from "@features/auth/services/auth.service";
@@ -20,5 +21,20 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
     return next(request);
   }
 
-  return next(request.clone({ setHeaders: { Authorization: `Bearer ${token}` } }));
+  const authenticatedRequest = request.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+
+  return next(authenticatedRequest).pipe(
+    catchError((error: unknown) => {
+      if (!(error instanceof HttpErrorResponse) || error.status !== 401) {
+        return throwError(() => error);
+      }
+
+      return authService.refreshAccessToken(true).pipe(
+        switchMap((response) =>
+          next(request.clone({ setHeaders: { Authorization: `Bearer ${response.accessToken}` } })),
+        ),
+        catchError((refreshError: unknown) => throwError(() => refreshError)),
+      );
+    }),
+  );
 };

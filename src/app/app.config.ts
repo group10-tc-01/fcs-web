@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideAnimationsAsync(),
     provideHttpClient(
-      withInterceptors([authInterceptor, errorInterceptor, httpErrorTestInterceptor]),
+      withInterceptors([errorInterceptor, authInterceptor, httpErrorTestInterceptor]),
     ),
     provideRouter(routes),
     MessageService,
