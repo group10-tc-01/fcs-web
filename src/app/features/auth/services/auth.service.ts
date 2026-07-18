@@ -102,7 +102,7 @@ export class AuthService {
     return this.loadCurrentUser(true).pipe(
       map(() => true),
       catchError(() =>
-        this.refreshSession(true).pipe(
+        this.refreshAccessToken(true).pipe(
           switchMap(() => this.loadCurrentUser(true)),
           map(() => true),
           catchError(() => of(false)),
@@ -111,7 +111,7 @@ export class AuthService {
     );
   }
 
-  private refreshSession(silent = false): Observable<ILoginResponse> {
+  refreshAccessToken(silent = false): Observable<ILoginResponse> {
     return this.httpClient
       .post<
         IApiResponse<ILoginResponse>

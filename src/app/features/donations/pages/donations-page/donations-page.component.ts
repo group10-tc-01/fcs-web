@@ -40,6 +40,12 @@ export class DonationsPageComponent {
   protected submit(): void {
     if (this.donationForm.invalid) {
       this.donationForm.markAllAsTouched();
+      if (this.donationForm.controls.amount.hasError("min")) {
+        this.notificationService.error(
+          "Valor inválido",
+          "Informe um valor de doação maior que zero.",
+        );
+      }
       return;
     }
 
