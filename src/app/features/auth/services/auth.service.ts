@@ -95,19 +95,14 @@ export class AuthService {
   }
 
   ensureAuthenticated(): Observable<boolean> {
-    if (this.isAuthenticated()) {
+    if (this.isAuthenticated() && this.accessToken()) {
       return of(true);
     }
 
-    return this.loadCurrentUser(true).pipe(
+    return this.refreshAccessToken(true).pipe(
+      switchMap(() => this.loadCurrentUser(true)),
       map(() => true),
-      catchError(() =>
-        this.refreshAccessToken(true).pipe(
-          switchMap(() => this.loadCurrentUser(true)),
-          map(() => true),
-          catchError(() => of(false)),
-        ),
-      ),
+      catchError(() => of(false)),
     );
   }
 
