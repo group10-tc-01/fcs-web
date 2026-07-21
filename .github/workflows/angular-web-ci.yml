@@ -3,36 +3,8 @@ name: Solidarity Web CI
 on:
   pull_request:
     branches: [main]
-    paths:
-      - src/**
-      - public/**
-      - angular.json
-      - package.json
-      - package-lock.json
-      - tsconfig*.json
-      - eslint.config.js
-      - .postcssrc.json
-      - Dockerfile
-      - nginx.conf
-      - k8s/**
-      - .github/workflows/angular-web-ci.yml
-      - .github/workflows/angular-web-delivery.yml
   push:
     branches: [main]
-    paths:
-      - src/**
-      - public/**
-      - angular.json
-      - package.json
-      - package-lock.json
-      - tsconfig*.json
-      - eslint.config.js
-      - .postcssrc.json
-      - Dockerfile
-      - nginx.conf
-      - k8s/**
-      - .github/workflows/angular-web-ci.yml
-      - .github/workflows/angular-web-delivery.yml
   workflow_dispatch:
 
 permissions:

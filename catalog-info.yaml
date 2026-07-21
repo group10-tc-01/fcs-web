@@ -1,0 +1,21 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: fcs-web
+  title: FCS Web
+  description: Interface web da plataforma Conexão Solidária para doadores e gestores.
+  annotations:
+    github.com/project-slug: group10-tc-01/fcs-web
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-id: fcs-web
+    backstage.io/kubernetes-namespace: fcs-web
+  links:
+    - title: GitHub Actions
+      url: https://github.com/group10-tc-01/fcs-web/actions
+    - title: Datadog
+      url: https://us5.datadoghq.com/metric/explorer?query=service%3Afcs-web
+spec:
+  type: website
+  lifecycle: production
+  owner: group:default/fcs-team
+  system: conexao-solidaria

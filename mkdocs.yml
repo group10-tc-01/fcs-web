@@ -1,0 +1,6 @@
+site_name: FCS Web
+site_description: Documentação operacional do frontend da Conexão Solidária.
+nav:
+  - Início: index.md
+plugins:
+  - techdocs-core
