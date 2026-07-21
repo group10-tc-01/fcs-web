@@ -170,17 +170,12 @@ describe("AuthService", () => {
     expect(result).toBe(true);
   });
 
-  it("should refresh the session silently when the current user request fails", () => {
+  it("should restore the session token before loading the current user after reload", () => {
     let result: boolean | undefined;
 
     authService.ensureAuthenticated().subscribe((value) => {
       result = value;
     });
-
-    const firstMeRequest = httpTestingController.expectOne(`${apiBaseUrl}/api/v1/me`);
-    expect(firstMeRequest.request.withCredentials).toBe(true);
-    expect(firstMeRequest.request.context.get(SKIP_ERROR_NOTIFICATION)).toBe(true);
-    firstMeRequest.flush("Unauthorized", { status: 401, statusText: "Unauthorized" });
 
     const refreshRequest = httpTestingController.expectOne(`${apiBaseUrl}/api/v1/auth/refresh`);
     expect(refreshRequest.request.withCredentials).toBe(true);
@@ -202,18 +197,16 @@ describe("AuthService", () => {
 
     expect(result).toBe(true);
     expect(authService.currentUser()?.name).toBe("Maria Silva");
+    expect(authService.accessToken()).toBe(loginResponse.accessToken);
   });
 
-  it("should return false when current user and refresh requests fail", () => {
+  it("should return false when the refresh request fails", () => {
     let result: boolean | undefined;
 
     authService.ensureAuthenticated().subscribe((value) => {
       result = value;
     });
 
-    httpTestingController
-      .expectOne(`${apiBaseUrl}/api/v1/me`)
-      .flush("Unauthorized", { status: 401, statusText: "Unauthorized" });
     httpTestingController
       .expectOne(`${apiBaseUrl}/api/v1/auth/refresh`)
       .flush("Unauthorized", { status: 401, statusText: "Unauthorized" });
